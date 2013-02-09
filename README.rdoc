@@ -5,8 +5,8 @@
 == Environment
 
 1. Machine
-	[CentOS 6.3 minimal](http://ftp.daum.net/centos/6.3/isos/x86_64/)
-	[Xen 4.2.1](http://xen.org/download/index_4.2.1.html)
+	{CentOS 6.3 minimal}[http://ftp.daum.net/centos/6.3/isos/x86_64/]
+	{Xen 4.2.1}[http://xen.org/download/index_4.2.1.html]
 
 2. Server
 	rails 3.2.11
@@ -17,7 +17,7 @@
 	pjax
 
 4. Template
-	[AQUINCUM](http://demo.kopyov.com/?theme=aquincum)
+	{AQUINCUM}[http://demo.kopyov.com/?theme=aquincum]
 
 == Reference
 
