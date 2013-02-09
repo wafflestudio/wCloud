@@ -1,0 +1,24 @@
+== Welcome to wCloud
+
+와플클라우드
+
+== Environment
+
+1. Machine
+	[CentOS 6.3 minimal](http://ftp.daum.net/centos/6.3/isos/x86_64/)
+	[Xen 4.2.1](http://xen.org/download/index_4.2.1.html)
+
+2. Server
+	rails 3.2.11
+	thin
+
+3. Javascript
+	jQuery
+	pjax
+
+4. Template
+	[AQUINCUM](http://demo.kopyov.com/?theme=aquincum)
+
+== Reference
+
+	Virtualization on CentOS: https://www.crc.id.au/xen-on-rhel6-scientific-linux-6-centos-6-howto/
