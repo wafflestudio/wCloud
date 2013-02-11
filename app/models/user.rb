@@ -37,4 +37,11 @@ class User
 
   ## Token authenticatable
   # field :authentication_token, :type => String
+
+## Relation
+  has_many :instances, :dependent => :destroy
+  has_many :disks, :dependent => :destroy
+  has_many :snapshots, :dependent => :destroy
+  has_many :networks, :dependent => :destroy
+  has_many :templates, :dependent => :destroy
 end
