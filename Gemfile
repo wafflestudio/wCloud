@@ -8,6 +8,7 @@ gem 'rails', '3.2.11'
 # DATABASE
 gem 'mongoid'
 gem 'bson_ext'
+gem "mongoid-paperclip", :require => "mongoid_paperclip"
 
 # AUTHENTICATION
 gem 'devise'

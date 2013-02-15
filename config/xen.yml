@@ -1,0 +1,6 @@
+development: &base
+        xl: "/usr/bin/xl"
+test:
+        <<: *base
+production:
+        <<: *base

@@ -1,5 +1,6 @@
 class User
   include Mongoid::Document
+  include Mongoid::Paperclip
   # Include default devise modules. Others available are:
   # :token_authenticatable, :confirmable,
   # :lockable, :timeoutable and :omniauthable
@@ -37,6 +38,14 @@ class User
 
   ## Token authenticatable
   # field :authentication_token, :type => String
+  
+ has_mongoid_attached_file :avatar,
+    :default        => ':rails_root/public/system/:class/:attachment/:style/default.jpg',
+    :styles => {
+    :original => ['1920x1680>', :jpg],
+    :small    => ['58x58#',     :jpg],
+    :thumb    => ['30x30#',     :jpg] #TODO
+  }
 
 ## Relation
   has_many :instances, :dependent => :destroy

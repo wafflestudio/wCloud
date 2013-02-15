@@ -1,0 +1,11 @@
+development: &base
+        root: "/var/cloud"
+        instance_root: "/var/cloud/instances"
+        instance_disk_path: "/disks" # /var/cloud/instances/instace_id/disks"
+        instance_log_path: "/logs" # /var/cloud/instances/instace_id/logs"
+        disk_root: "/var/cloud/disks"
+        template_root: "/var/cloud/templates"
+test:
+        <<: *base
+production:
+        <<: *base
