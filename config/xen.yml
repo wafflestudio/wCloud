@@ -1,5 +1,5 @@
 development: &base
-        xl: "/usr/bin/xl"
+        xl: "/usr/sbin/xl"
 test:
         <<: *base
 production:

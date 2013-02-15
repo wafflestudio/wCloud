@@ -20,17 +20,17 @@ users = [
 puts "MODEL::User"
 
 users.each do |user|
-	e = Admin.new
+	e = User.new
 	e.email = user[:email]
 	e.password = user[:password]
 	puts "Error #{e.error.full_messages.to_s}" unless e.save
 end
 
 templates = [
-{:filename => "", :name => "", :description => "", :type => Template::PVM, :arch => Template::X86_64},
-{:filename => "", :name => "", :description => "", :type => Template::PVM, :arch => Template::X86_64},
-{:filename => "", :name => "", :description => "", :type => Template::PVM, :arch => Template::X86_64},
-{:filename => "", :name => "", :description => "", :type => Template::HVM, :arch => Template::X86_64}
+{:filename => "CentOS-6.3-2013.02.15.vhd", :name => "CentOS 6.3", :description => "Minimal", :type => Template::PVM, :arch => Template::X86_64},
+{:filename => "Ubuntu-12.04.1-2013.02.15.vhd", :name => "Ubunutu 12.04.1", :description => "LTS", :type => Template::PVM, :arch => Template::X86_64},
+{:filename => "Debian-6.0-2013.02.15.vhd", :name => "Deiban 6.0", :description => "", :type => Template::PVM, :arch => Template::X86_64},
+{:filename => "Windows-8-2013.02.15.vhd", :name => "Windows 8", :description => "Trial 90 days", :type => Template::HVM, :arch => Template::X86_64}
 ]
 
 puts "MODEL::Template"
@@ -47,7 +47,11 @@ templates.each do |template|
 end
 
 instance_specs = [
-{:name => "", :description => "", :ram => 0, :core => 0}
+{:name => "Test", :description => "Minimal option", :ram => 256, :core => 1},
+{:name => "Small", :description => "Basic option for Linux", :ram => 512, :core => 1},
+{:name => "Medium", :description => "Best option for Linux", :ram => 1024, :core => 1},
+{:name => "Large", :description => "Powerful Calculation", :ram => 1024, :core => 2},
+{:name => "Extra", :description => "Best option for Windows", :ram => 2048, :core => 2}
 ]
 
 puts "MODEL::InstanceSpec"
@@ -63,9 +67,8 @@ instance_specs.each do |spec|
 end
 
 disk_specs = [
-{:name => "", :description => "", :type => DiskSpec::HDD, :size => 64 * DiskSpec::GB},
-{:name => "", :description => "", :type => DiskSpec::HDD, :size => 64 * DiskSpec::GB},
-{:name => "", :description => "", :type => DiskSpec::HDD, :size => 64 * DiskSpec::GB}
+{:name => "OS 64GB", :description => "Base Disk", :type => DiskSpec::HDD, :size => 64 * DiskSpec::GB},
+{:name => "ownCloud", :description => "Additional Disk", :type => DiskSpec::HDD, :size => 30 * DiskSpec::GB}
 ]
 
 puts "MODEL::DiskSpec"
@@ -81,7 +84,7 @@ disk_specs.each do |spec|
 end
 
 network_specs = [
-{:name => "", :description => "", :type => NetworkSpec::PRIVATE}
+{:name => "Private Network", :description => "Using ipTIME", :type => NetworkSpec::PRIVATE}
 ]
 
 puts "MODEL::NetworkSpec"
@@ -96,7 +99,12 @@ network_specs.each do |spec|
 end
 
 network_pools = [
-{:ip => "", :port => {}}
+{:ip => "192.168.0.200", :port => {}},
+{:ip => "192.168.0.201", :port => {}},
+{:ip => "192.168.0.202", :port => {}},
+{:ip => "192.168.0.203", :port => {}},
+{:ip => "192.168.0.204", :port => {}},
+{:ip => "192.168.0.205", :port => {}}
 ]
 
 puts "MODEL::NetworkPool"

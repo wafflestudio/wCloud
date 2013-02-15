@@ -1,0 +1,6 @@
+development: &base
+        tap-ctl: "/usr/sbin/tap-ctl"
+test:
+        <<: *base
+production:
+        <<: *base
