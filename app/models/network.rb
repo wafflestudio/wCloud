@@ -12,6 +12,7 @@ field :mac, type: String, :default => ""
 ## Relation
 belongs_to :network_spec
 belongs_to :instance
+has_one :network_pool
 
 ## Validation
 validates :network_spec, :presence => true
