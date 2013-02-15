@@ -1,0 +1,6 @@
+development: &base
+        xl: "/usr/sbin/xl"
+test:
+        <<: *base
+production:
+        <<: *base

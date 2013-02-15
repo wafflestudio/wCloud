@@ -4,6 +4,8 @@ class NetworkSpec
 PRIVATE=1
 PUBLIC=2
 
+## field
+field :active, type: Boolean, :default => false
 field :name, type: String, :default => ""
 field :description, type: String, :default => ""
 field :type, type: Integer, :default => PRIVATE

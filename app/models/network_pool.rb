@@ -2,7 +2,8 @@ class NetworkPool
   include Mongoid::Document
 
 ## Field
-field :ip, type: String :default => ""
+field :active, type: Boolean, :default => false
+field :ip, type: String, :default => ""
 field :port, type: Hash, :default => {}
 
 ## Relation

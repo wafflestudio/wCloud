@@ -12,6 +12,7 @@ STOPPED=6
 STRATING=7
 
 ## Field
+field :protected, type: Boolean, :default => false
 field :name, type: String, :default => ""
 field :description, type: String, :default => ""
 field :ram, type: Integer, :default => 512

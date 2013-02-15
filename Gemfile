@@ -8,6 +8,7 @@ gem 'rails', '3.2.11'
 # DATABASE
 gem 'mongoid'
 gem 'bson_ext'
+gem "mongoid-paperclip", :require => "mongoid_paperclip"
 
 # AUTHENTICATION
 gem 'devise'
@@ -34,7 +35,8 @@ group :assets do
 end
 
 # JAVASCRIPT
-gem 'jquery-rails'
+gem 'jquery-rails', '~> 2.1.4'
+gem 'jquery-ui-rails'
 gem 'rack-pjax'
 
 # To use ActiveModel has_secure_password
