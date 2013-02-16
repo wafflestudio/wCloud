@@ -1,4 +1,4 @@
-# RailsAdmin config file. Generated on February 15, 2013 00:01
+# RailsAdmin config file. Generated on February 16, 2013 23:58
 # See github.com/sferik/rails_admin for more informations
 
 RailsAdmin.config do |config|
@@ -27,10 +27,10 @@ RailsAdmin.config do |config|
   # config.default_items_per_page = 20
 
   # Exclude specific models (keep the others):
-  # config.excluded_models = ['Admin', 'Disk', 'DiskSpec', 'Instance', 'InstanceSpec', 'Network', 'NetworkPool', 'NetworkSpec', 'Snapshot', 'Template', 'User']
+  # config.excluded_models = ['Admin', 'Disk', 'DiskSpec', 'Instance', 'InstanceSpec', 'Network', 'NetworkPool', 'NetworkSpec', 'Snapshot', 'Template', 'Usage', 'User']
 
   # Include specific models (exclude the others):
-  # config.included_models = ['Admin', 'Disk', 'DiskSpec', 'Instance', 'InstanceSpec', 'Network', 'NetworkPool', 'NetworkSpec', 'Snapshot', 'Template', 'User']
+  # config.included_models = ['Admin', 'Disk', 'DiskSpec', 'Instance', 'InstanceSpec', 'Network', 'NetworkPool', 'NetworkSpec', 'Snapshot', 'Template', 'Usage', 'User']
 
   # Label methods for model instances:
   # config.label_methods << :description # Default is [:name, :title]
@@ -65,6 +65,7 @@ RailsAdmin.config do |config|
   #     configure :snapshots, :has_many_association 
   #     configure :networks, :has_many_association 
   #     configure :templates, :has_many_association 
+  #     configure :usages, :has_many_association 
 
   #   # Found columns:
 
@@ -81,6 +82,11 @@ RailsAdmin.config do |config|
   #     configure :last_sign_in_at, :datetime 
   #     configure :current_sign_in_ip, :text 
   #     configure :last_sign_in_ip, :text 
+  #     configure :avatar_file_name, :text         # Hidden 
+  #     configure :avatar_content_type, :text         # Hidden 
+  #     configure :avatar_file_size, :integer         # Hidden 
+  #     configure :avatar_updated_at, :datetime         # Hidden 
+  #     configure :avatar, :paperclip 
 
   #   # Cross-section configuration:
 
@@ -180,6 +186,7 @@ RailsAdmin.config do |config|
 
   #     configure :_type, :text         # Hidden 
   #     configure :_id, :bson_object_id 
+  #     configure :active, :boolean 
   #     configure :name, :string 
   #     configure :description, :text 
   #     configure :type, :integer 
@@ -233,11 +240,13 @@ RailsAdmin.config do |config|
   #     configure :_id, :bson_object_id 
   #     configure :created_at, :datetime 
   #     configure :updated_at, :datetime 
+  #     configure :protected, :boolean 
   #     configure :name, :string 
   #     configure :description, :text 
   #     configure :ram, :integer 
   #     configure :cpu, :integer 
   #     configure :state, :integer 
+  #     configure :vncpassword, :text 
   #     configure :user_id, :bson_object_id         # Hidden 
   #     configure :instance_spec_id, :bson_object_id         # Hidden 
   #     configure :template_id, :bson_object_id         # Hidden 
@@ -283,8 +292,10 @@ RailsAdmin.config do |config|
   #     configure :_type, :text         # Hidden 
   #     configure :_id, :bson_object_id 
   #     configure :active, :boolean 
+  #     configure :name, :string 
+  #     configure :description, :text 
   #     configure :ram, :integer 
-  #     configure :cpu, :integer 
+  #     configure :core, :integer 
 
   #   # Cross-section configuration:
 
@@ -377,6 +388,7 @@ RailsAdmin.config do |config|
 
   #     configure :_type, :text         # Hidden 
   #     configure :_id, :bson_object_id 
+  #     configure :active, :boolean 
   #     configure :ip, :text 
   #     configure :port, :serialized 
   #     configure :network_id, :bson_object_id         # Hidden 
@@ -421,9 +433,11 @@ RailsAdmin.config do |config|
 
   #     configure :_type, :text         # Hidden 
   #     configure :_id, :bson_object_id 
+  #     configure :active, :boolean 
   #     configure :name, :string 
   #     configure :description, :text 
   #     configure :type, :integer 
+  #     configure :bridge, :text 
 
   #   # Cross-section configuration:
 
@@ -516,13 +530,66 @@ RailsAdmin.config do |config|
   #     configure :_id, :bson_object_id 
   #     configure :created_at, :datetime 
   #     configure :updated_at, :datetime 
+  #     configure :active, :boolean 
+  #     configure :protected, :boolean 
   #     configure :path, :text 
   #     configure :name, :string 
   #     configure :description, :text 
   #     configure :type, :integer 
   #     configure :arch, :integer 
+  #     configure :logo_file_name, :text         # Hidden 
+  #     configure :logo_content_type, :text         # Hidden 
+  #     configure :logo_file_size, :integer         # Hidden 
+  #     configure :logo_updated_at, :datetime         # Hidden 
+  #     configure :logo, :paperclip 
   #     configure :user_id, :bson_object_id         # Hidden 
   #     configure :instance_id, :bson_object_id         # Hidden 
+
+  #   # Cross-section configuration:
+
+  #     # object_label_method :name     # Name of the method called for pretty printing an *instance* of ModelName
+  #     # label 'My model'              # Name of ModelName (smartly defaults to ActiveRecord's I18n API)
+  #     # label_plural 'My models'      # Same, plural
+  #     # weight 0                      # Navigation priority. Bigger is higher.
+  #     # parent OtherModel             # Set parent model for navigation. MyModel will be nested below. OtherModel will be on first position of the dropdown
+  #     # navigation_label              # Sets dropdown entry's name in navigation. Only for parents!
+
+  #   # Section specific configuration:
+
+  #     list do
+  #       # filters [:id, :name]  # Array of field names which filters should be shown by default in the table header
+  #       # items_per_page 100    # Override default_items_per_page
+  #       # sort_by :id           # Sort column (default is primary key)
+  #       # sort_reverse true     # Sort direction (default is true for primary key, last created first)
+  #     end
+  #     show do; end
+  #     edit do; end
+  #     export do; end
+  #     # also see the create, update, modal and nested sections, which override edit in specific cases (resp. when creating, updating, modifying from another model in a popup modal or modifying from another model nested form)
+  #     # you can override a cross-section field configuration in any section with the same syntax `configure :field_name do ... end`
+  #     # using `field` instead of `configure` will exclude all other fields and force the ordering
+  # end
+
+
+  ###  Usage  ###
+
+  # config.model 'Usage' do
+
+  #   # You can copy this to a 'rails_admin do ... end' block inside your usage.rb model definition
+
+  #   # Found associations:
+
+  #     configure :user, :belongs_to_association 
+
+  #   # Found columns:
+
+  #     configure :_type, :text         # Hidden 
+  #     configure :_id, :bson_object_id 
+  #     configure :created_at, :datetime 
+  #     configure :updated_at, :datetime 
+  #     configure :read, :boolean 
+  #     configure :message, :text 
+  #     configure :user_id, :bson_object_id         # Hidden 
 
   #   # Cross-section configuration:
 
@@ -563,6 +630,7 @@ RailsAdmin.config do |config|
   #     configure :snapshots, :has_many_association 
   #     configure :networks, :has_many_association 
   #     configure :templates, :has_many_association 
+  #     configure :usages, :has_many_association 
 
   #   # Found columns:
 
@@ -579,6 +647,11 @@ RailsAdmin.config do |config|
   #     configure :last_sign_in_at, :datetime 
   #     configure :current_sign_in_ip, :text 
   #     configure :last_sign_in_ip, :text 
+  #     configure :avatar_file_name, :text         # Hidden 
+  #     configure :avatar_content_type, :text         # Hidden 
+  #     configure :avatar_file_size, :integer         # Hidden 
+  #     configure :avatar_updated_at, :datetime         # Hidden 
+  #     configure :avatar, :paperclip 
 
   #   # Cross-section configuration:
 

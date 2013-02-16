@@ -5,39 +5,37 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
     <%= csrf_meta_tags %>
 
-    <title>WCloud</title>
+    <title><%= content_for?(:title) ? content_for(:title) : "wCloud" %></title>
 
     <%= stylesheet_link_tag    "application", :media => "all" %>
     <!--[if IE]> <link href="css/ie.css" rel="stylesheet" type="text/css"> <![endif]-->
 
     <%= javascript_include_tag "application" %>
+    <script type="text/javascript">
+      $(document).ready(function() {
+          //$('a').pjax('[data-pjax-container]');
+      });
+    </script>
   </head>
   <body>
     <!-- Top line begins -->
     <div id="top">
       <div class="wrapper">
-        <a href="index.html" title="" class="logo"><img src="/assets/Aquincum/logo.png" alt="" /></a>
+        <%= link_to (image_tag "/assets/Aquincum/logo.png", :alt => "wCloud"), root_path, :title => "wCloud", :class => "logo" %>
 
         <!-- Right top nav -->
         <div class="topNav">
           <ul class="userNav">
-            <li><a title="" class="search"></a></li>
-            <li><a href="#" title="" class="screen"></a></li>
-            <li><a href="#" title="" class="settings"></a></li>
-            <li><%= link_to "", destroy_user_session_path, :method => :delete, :class => "logout" %></li>
-            <li class="showTabletP"><a href="#" title="" class="sidebar"></a></li>
+            <li><%= link_to "", about_path, :class => "search", :title => "About" %>
+            <% if signed_in? %>
+              <li><a href="#" title="Settings" class="settings"></a></li>
+              <li><%= link_to "", destroy_user_session_path, :method => :delete, :class => "logout", :title => "Signout" %></li>
+            <% end %>
           </ul>
-          <a title="" class="iButton"></a>
-          <a title="" class="iTop"></a>
-          <div class="topSearch">
-            <div class="topDropArrow"></div>
-            <form action="">
-              <input type="text" placeholder="search..." name="topSearch" />
-              <input type="submit" value="" />
-            </form>
-          </div>
         </div>
+      </div>
 
+      <% if signed_in? %>
         <!-- Responsive nav -->
         <ul class="altMenu">
           <li><a href="index.html" title="">Dashboard</a></li>
@@ -50,37 +48,37 @@
             <li><a href="ui_custom.html">Custom elements</a></li>
           </ul>
           </li>
-          <li><a href="forms.html" title="" class="exp">Forms stuff</a>
-          <ul>
-            <li><a href="forms.html">Inputs &amp; elements</a></li>
-            <li><a href="form_validation.html">Validation</a></li>
-            <li><a href="form_editor.html">File uploads &amp; editor</a></li>
-            <li><a href="form_wizards.html">Form wizards</a></li>
-          </ul>
-          </li>
-          <li><a href="messages.html" title="">Messages</a></li>
-          <li><a href="statistics.html" title="">Statistics</a></li>
-          <li><a href="tables.html" title="" class="exp">Tables</a>
-          <ul>
-            <li><a href="tables.html">Standard tables</a></li>
-            <li><a href="tables_dynamic.html">Dynamic tables</a></li>
-            <li><a href="tables_control.html">Tables with control</a></li>
-            <li><a href="tables_sortable.html">Sortable &amp; resizable</a></li>
-          </ul>
-          </li>
-          <li><a href="other_calendar.html" title="" class="exp">Other pages</a>
-          <ul>
-            <li><a href="other_calendar.html">Calendar</a></li>
-            <li><a href="other_gallery.html">Images gallery</a></li>
-            <li><a href="other_file_manager.html">File manager</a></li>
-            <li><a href="other_404.html">Sample error page</a></li>
-            <li><a href="other_typography.html">Typography</a></li>
-          </ul>
-          </li>
         </ul>
-      </div>
+      <% end %>
     </div>
     <!-- Top line ends -->
-    <%= yield %>
+
+    <% if signed_in? %>
+      <% render "layouts/sidebar" %>
+      <% render "layouts/contentTop" %>
+      <% render "layouts/breadLine" %>
+
+      <!-- Sidebar begins -->
+      <div id="sidebar" class="with">
+        <%= yield :sidebar %>
+      </div>
+      <!-- Sidebar ends -->
+      <!-- Content begins -->
+      <div id="content" data-pjax-container>
+        <!-- Content Top -->
+        <%= yield :contentTop %>
+        <!-- Breadcrumbs line -->
+        <%= yield :breadLine %>
+
+        <!-- Main content -->
+        <%= yield %>
+        <!-- Main content ends -->
+      </div>
+      <!-- Content ends -->
+    <% else # signin, signup, reset password %>
+      <div data-pjax-container>
+        <%= yield %>
+      </div>
+    <% end %>
   </body>
 </html>

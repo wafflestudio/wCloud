@@ -11,7 +11,6 @@ module MainHelper
 
   def create_vm(instance)
     return false unless instance.is_a?(Instance)
-    instance_dir = instance_root+"/"+instance._id
     config_path = instance_dir+"/config"
 
     system("#{xl} create #{config_path}")
@@ -91,23 +90,20 @@ module MainHelper
   end
 
   private
-  def prepare(instance)
+  def prepare_vm(instance)
     return false unless instance.is_a?(Instance)
-    instance_dir = instance_root+"/"+instance._id
 
     system("mkdir #{instance_dir}")
   end
 
-  def clean(instance)
+  def clean_vm(instance)
     return false unless instance.is_a?(Instance)
-    instance_dir = instance_root+"/"+instance._id
 
     system("rm -rf #{instance_dir}")
   end
 
   def generate_config(instance)
     return false unless instance.is_a?(Instance)
-    instance_dir = instance_root+"/"+instance._id
     config_path = instance_dir+"/config"
 
     name = instance._id
@@ -146,6 +142,9 @@ module MainHelper
 
   def instance_root
     Cloud::INSTANCE_ROOT
+  end
+  def instance_dir(instance)
+    instance_root+"/"+instance._id
   end
   def disk_root
     Cloud::DISK_ROOT

@@ -1,0 +1,97 @@
+<%= form_for(@instance, :remote => true) do |f| %>
+  <div class="widget">
+    <div class="whead">
+      <h6><%= f.label :template_id, "Template" %></h6>
+    </div>
+    <table cellpadding="0" cellspacing="0" width="100%" class="tDefault checkAll tMedia">
+      <thead>
+        <tr>
+          <td width="50">Logo</td>
+          <td width="130">Name</td>
+          <td>Description</td>
+          <td width="50">Arch</td>
+          <td width="70">Type</td>
+          <td width="50">Select</td>
+        </tr>
+      </thead>
+      <tfoot></tfoot>
+      <tbody>
+        <% @templates.each do |template| %>
+          <tr>
+            <td><a href="/assets/Aquincum/big.png" title="" class="lightbox"><img src="/assets/Aquincum/live/face1.png" alt="" style="margin-top: 7px;"></a></td>
+            <td><%= template.name %></td>
+            <td><%= template.description %></td>
+            <td><%= template.arch %>bit</td>
+            <td><%= template.user.nil? ? "Base" : "Custom" %></td>
+            <td><%= f.radio_button :template_id, template._id %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+  <div class="divider"><span></span></div>
+  <div class="widget">
+    <div class="whead">
+      <h6><%= f.label :instance_spec_id, "Spec" %></h6>
+    </div>
+    <table cellpadding="0" cellspacing="0" width="100%" class="tDefault checkAll tMedia">
+      <thead>
+        <tr>
+          <td width="130">Name</td>
+          <td>Description</td>
+          <td width="50">Ram</td>
+          <td width="70">CPU</td>
+          <td width="50">Select</td>
+        </tr>
+      </thead>
+      <tfoot></tfoot>
+      <tbody>
+        <% @instance_specs.each do |spec| %>
+          <tr>
+            <td><%= spec.name %></td>
+            <td><%= spec.description %></td>
+            <td><%= spec.ram %>MB</td>
+            <td><%= spec.core %>Core</td>
+            <td><%= f.radio_button :instance_spec_id, spec._id %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+  <div class="divider"><span></span></div>
+  <div class="widget">
+    <div class="whead">
+      <h6><label>Disk</label></h6>
+    </div>
+    <table cellpadding="0" cellspacing="0" width="100%" class="tDefault checkAll tMedia">
+      <thead>
+        <tr>
+          <td width="130">Name</td>
+          <td>Description</td>
+          <td width="70">Size</td>
+          <td width="50">Select</td>
+        </tr>
+      </thead>
+      <tfoot></tfoot>
+      <tbody>
+        <tr>
+          <td>OS Disk</td>
+          <td>Default</td>
+          <td>64GB</td>
+          <td><input type="radio" checked /></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="divider"><span></span></div>
+  <%= f.label :name %>
+  <%= f.text_field :name, :class => "clear", :placeholder => "Tom's Instance" %>
+  <%= f.label :description %>
+  <%= f.text_area :description, :rows => 8, :cols => "", :class => "auto" %>
+  <div>
+    <span class="floatR">
+      <%= f.check_box :protected, :class => "check", :checked => true %>
+      <%= f.label :protected, :style => "float: none;" %>
+    </span>
+  </div>
+<% end %>

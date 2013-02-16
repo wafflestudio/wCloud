@@ -1,0 +1,72 @@
+<% content_for :sidebar do # content_for :sidebar begins %>
+<div class="mainNav">
+  <div class="user">
+    <a title="" class="leftUserDrop">
+      <img src="/assets/Aquincum/user.png" alt="" />
+      <span><strong><%= current_user.unread_usages.count %></strong></span>
+    </a>
+    <span><%= current_user.name %></span>
+    <ul class="leftUser">
+      <li><%= link_to "My Profile", "#", :class => "sProfile" %></li>
+      <li><%= link_to_function "Settings", "alert('not yet')", :class => "sSettings" %></li>
+      <li><%= link_to "Sign out", destroy_user_session_path, :method => :delete, :class => "sLogout" %></li>
+    </ul>
+  </div>
+
+  <!-- Responsive nav -->
+  <div class="altNav">
+    <!-- User nav -->
+    <ul class="userNav">
+      <li><%= link_to "", "#", :class => "profile" %></li>
+      <li><%= link_to_function "", "alert('not yet')", :class => "settings" %></li>
+      <li><%= link_to "", destroy_user_session_path, :method => :delete, :class => "logout" %></li>
+    </ul>
+  </div>
+
+  <!-- Main nav -->
+  <ul class="nav">
+    <li>
+    <a href="<%= root_path %>" title="" class="active">
+      <img src="/assets/Aquincum/icons/mainnav/tables.png" alt="" />
+      <span>Dashboard</span>
+    </a>
+    </li>
+    <li>
+    <a href="<%= instances_path %>" title="">
+      <img src="/assets/Aquincum/icons/mainnav/dashboard.png" alt="" />
+      <span>Instances</span>
+    </a>
+    </li>
+    <li>
+    <a href="<%= disks_path %>" title="">
+      <img src="/assets/Aquincum/icons/mainnav/forms.png" alt="" />
+      <span>Disks</span>
+    </a>
+    </li>
+    <li>
+    <a href="<%= templates_path %>" title="">
+      <img src="/assets/Aquincum/icons/mainnav/other.png" alt="" />
+      <span>Templates</span>
+    </a>
+    </li>
+    <li>
+    <a href="<%= networks_path %>" title="">
+      <img src="/assets/Aquincum/icons/mainnav/ui.png" alt="" />
+      <span>Networks</span>
+    </a>
+    </li>
+    <li>
+    <a href="<%= usages_path %>" title="">
+      <img src="/assets/Aquincum/icons/mainnav/messages.png" alt="" />
+      <span>Messages</span>
+    </a>
+    </li>
+    <li>
+    <a href="#" title="">
+      <img src="/assets/Aquincum/icons/mainnav/statistics.png" alt="" />
+      <span>Statistics</span>
+    </a>
+    </li>
+  </ul>
+</div>
+<% end # content_for :sidebar ends %>

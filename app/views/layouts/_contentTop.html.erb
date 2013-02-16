@@ -1,0 +1,5 @@
+<% content_for :contentTop do %>
+  <div class="contentTop">
+    <span class="pageTitle"><span class="icon-screen"></span><%= content_for?(:pageTitle) ? content_for(:pageTitle) : "Dashboard" %></span>
+  </div>
+<% end %>

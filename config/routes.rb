@@ -34,5 +34,11 @@ WCloud::Application.routes.draw do
   resources :templates do
   end
 
+  ## USAGE
+  resources :usages, :only => [:index] do
+  end
+
   root :to => "main#home"
+  match "/about" => "main#about"
+  match "/developers" => "main#devlopers"
 end

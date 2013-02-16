@@ -3,9 +3,9 @@ class User
   include Mongoid::Paperclip
   # Include default devise modules. Others available are:
   # :token_authenticatable, :confirmable,
-  # :lockable, :timeoutable and :omniauthable
+  # :lockable and :omniauthable
   devise :database_authenticatable, :registerable,
-    :recoverable, :rememberable, :trackable, :validatable
+    :recoverable, :rememberable, :trackable, :validatable, :timeoutable
 
   ## Database authenticatable
   field :email,              :type => String, :default => ""
@@ -54,4 +54,11 @@ class User
   has_many :networks, :dependent => :destroy
   has_many :templates, :dependent => :destroy
   has_many :usages, :dependent => :destroy
+
+  def name
+    self.email.split("@").first
+  end
+  def unread_usages
+    self.usages.where(:read => false)
+  end
 end

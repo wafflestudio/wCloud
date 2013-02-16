@@ -3,6 +3,7 @@ class Usage
   include Mongoid::Timestamps
 
   ## Field
+  field :read, type: Boolean, :default => false
   field :message, type: String, :default => ""
 
   ## Relation

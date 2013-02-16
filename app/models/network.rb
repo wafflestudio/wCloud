@@ -3,7 +3,7 @@ class Network
   include Mongoid::Timestamps
 
   ## Field
-  field :name, type: String, :default => ""
+  field :name, type: String, :default => "Network##{rand(100)}"
   field :description, type: String, :default => ""
 
   field :ip, type: String, :default => ""

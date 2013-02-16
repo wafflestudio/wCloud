@@ -1,0 +1,14 @@
+<% content_for :breadLine do %>
+  <div class="breadLine">
+    <div class="bc">
+      <% if content_for?(:breadcrumbs) %>
+        <%= content_for(:breadcrumbs) %>
+      <% else %>
+        <ul id="breadcrumbs" class="breadcrumbs">
+          <li><%= link_to "Dashboard", root_path %></li>
+          <li class="current"><%= link_to "Unknown", "#unknown" %></li>
+        </ul>
+      <% end %>
+    </div>
+  </div>
+<% end %>

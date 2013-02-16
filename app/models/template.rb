@@ -12,6 +12,7 @@ class Template
 
   ## Field
   field :active, type: Boolean, :default => false
+  field :protected, type: Boolean, :default => true
   field :path, type: String, :default => ""
   field :name, type: String, :default => ""
   field :description, type: String, :default => ""

@@ -10,7 +10,7 @@ class Disk
 
   ## Field
   field :path, type: String, :default => ""
-  field :name, type: String, :default => ""
+  field :name, type: String, :default => "Disk##{rand(100)}"
   field :description, type: String, :default => ""
   field :size, type: Integer, :default => 50 * GB
 
@@ -29,4 +29,11 @@ class Disk
   ## Validation
   validates :disk_spec, :presence => true
   validates :instance, :presence => true
+
+  before_save :set_size
+  
+  private
+  def set_size
+    self.size = self.disk_spec.size
+  end
 end
