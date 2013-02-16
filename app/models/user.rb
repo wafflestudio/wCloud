@@ -5,12 +5,12 @@ class User
   # :token_authenticatable, :confirmable,
   # :lockable, :timeoutable and :omniauthable
   devise :database_authenticatable, :registerable,
-         :recoverable, :rememberable, :trackable, :validatable
+    :recoverable, :rememberable, :trackable, :validatable
 
   ## Database authenticatable
   field :email,              :type => String, :default => ""
   field :encrypted_password, :type => String, :default => ""
-  
+
   ## Recoverable
   field :reset_password_token,   :type => String
   field :reset_password_sent_at, :type => Time
@@ -38,8 +38,8 @@ class User
 
   ## Token authenticatable
   # field :authentication_token, :type => String
-  
- has_mongoid_attached_file :avatar,
+
+  has_mongoid_attached_file :avatar,
     :default        => ':rails_root/public/system/:class/:attachment/:style/default.jpg',
     :styles => {
     :original => ['1920x1680>', :jpg],
@@ -47,7 +47,7 @@ class User
     :thumb    => ['30x30#',     :jpg] #TODO
   }
 
-## Relation
+  ## Relation
   has_many :instances, :dependent => :destroy
   has_many :disks, :dependent => :destroy
   has_many :snapshots, :dependent => :destroy
