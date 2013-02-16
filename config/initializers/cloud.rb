@@ -3,7 +3,6 @@ module Cloud
   ROOT = CONFIG['root']
 
   INSTANCE_ROOT = CONFIG['instance_root']
-  INSTANCE_DISK_PATH = CONFIG['instance_disk_path']
   INSTANCE_LOG_PATH = CONFIG['instance_log_path']
 
   DISK_ROOT = CONFIG['disk_root']

@@ -1,5 +1,7 @@
 development: &base
         xl: "/usr/sbin/xl"
+        vhd-util: "/usr/sbin/vhd-util"
+        tap-ctl: "/usr/sbin/tap-ctl"
 test:
         <<: *base
 production:

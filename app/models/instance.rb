@@ -19,6 +19,8 @@ field :ram, type: Integer, :default => 512
 field :cpu, type: Integer, :default => 1
 field :state, type: Integer, :default => CREATING
 
+field :vncpassword, type: String, :default => ""
+
 ## Relation
 belongs_to :user
 belongs_to :instance_spec

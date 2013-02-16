@@ -53,4 +53,5 @@ class User
   has_many :snapshots, :dependent => :destroy
   has_many :networks, :dependent => :destroy
   has_many :templates, :dependent => :destroy
+  has_many :usages, :dependent => :destroy
 end

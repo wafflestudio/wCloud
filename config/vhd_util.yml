@@ -1,6 +1,0 @@
-development: &base
-        vhd-util: "/usr/sbin/vhd-util"
-test:
-        <<: *base
-production:
-        <<: *base
