@@ -11,6 +11,7 @@ class Instance
   STOPPING=5
   STOPPED=6
   STRATING=7
+  REBOOTING=8
 
   ## Field
   field :protected, type: Boolean, :default => false
@@ -19,7 +20,9 @@ class Instance
   field :ram, type: Integer, :default => 512
   field :cpu, type: Integer, :default => 1
   field :state, type: Integer, :default => CREATING
+  field :domid, type: Integer, :default => 0
 
+  field :vncport, type: Integer, :default => 0
   field :vncpassword, type: String, :default => ""
 
   ## Relation
@@ -36,4 +39,28 @@ class Instance
   validates :user, :presence => true
   validates :instance_spec, :presence => true
   validates :template, :presence => true
+
+  ## Callback
+  before_save :set_default
+
+  def set_default
+    case self.state
+    when CREATING
+      self.vncpassword = Digest::SHA1.hexdigest(Time.now.to_s)[0...6]
+    when STOPPED
+      self.domid = 0
+      self.vncport = 0
+    when STARTING
+      self.vncpassword = Digest::SHA1.hexdigest(Time.now.to_s)[0...6]
+    when REBOOTING
+      self.domid = 0
+      self.vncport = 0
+      self.vncpassword = Digest::SHA1.hexdigest(Time.now.to_s)[0...6]
+    end
+  end
+
+  def state_to_string
+    states = ["Unknown", "Creating", "Running", "Destroying", "Destroyed", "Stopping", "Stopped", "Starting", "Rebooting"]
+    states[self.state]
+  end
 end

@@ -1,6 +1,6 @@
 module MainHelper
-  def get_info
-    json = `#{xl} list -l`
+  def get_info(domname = "")
+    json = `#{xl} list -l #{domname}`
     JSON.parse(json)
   end
 
@@ -11,7 +11,7 @@ module MainHelper
 
   def create_vm(instance)
     return false unless instance.is_a?(Instance)
-    config_path = instance_dir+"/config"
+    config_path = instance_dir(instance)+"/config"
 
     system("#{xl} create #{config_path}")
   end
@@ -60,13 +60,13 @@ module MainHelper
     `#{xl} domname #{domid}"`
   end
 
-  def create_disk(disk)
+  def create_disk(disk, parent_path)
     return false unless disk.is_a?(Disk)
 
-    if disk.parent.nil?
+    if parent_path.nil? || parent_path.empty?
       system("#{vhd_util} create -n #{disk.path} -s #{disk.size * Disk::GB}")
     else
-      system("#{vhd_util} snapshot -n #{disk.path} -p #{disk.parent.path}")
+      system("#{vhd_util} snapshot -n #{disk.path} -p #{parent_path}")
     end
   end
 
@@ -93,24 +93,25 @@ module MainHelper
   def prepare_vm(instance)
     return false unless instance.is_a?(Instance)
 
-    system("mkdir #{instance_dir}")
+    system("mkdir #{instance_dir(instance)}")
   end
 
   def clean_vm(instance)
     return false unless instance.is_a?(Instance)
 
-    system("rm -rf #{instance_dir}")
+    system("rm -rf #{instance_dir(instance)}")
   end
 
   def generate_config(instance)
     return false unless instance.is_a?(Instance)
-    config_path = instance_dir+"/config"
+    config_path = instance_dir(instance)+"/config"
 
     name = instance._id
     memory = instance.instance_spec.ram
     vcpus = instance.instance_spec.core
     vif = instance.networks.map {|network|
-      "mac=#{network.mac},ip=#{network.ip},bridge=#{network_spec.bridge}"
+      #"mac=#{network.mac},bridge=#{network.network_spec.bridge}"
+      "bridge=#{network.network_spec.bridge}"
     }
     disk = instance.disks.map {|disk|
       if disk.disk_spec.type == DiskSpec::HDD
@@ -120,24 +121,34 @@ module MainHelper
       end
     }
 
-    File.open(config_path, "w") do |f|
-      f.puts  "name=#{name}"
-      f.puts  "memory=#{memory}"
-      f.puts  "vcpus=#{vcpus}"
-      f.puts  "vif=#{vif.to_s}"
-      f.puts  "disk=#{disk.to_s}"
-      
-      if instance.instance_spec == InstanceSpec::PVM
-        f.puts "bootloader=pygrub"
-      elsif instance.instance_spec == InstanceSpec::HVM
-        f.puts "builder=hvm"
-        f.puts "vnc=1"
-        f.puts "vnclisten=0.0.0.0"
-        f.puts "vncpassword=#{instance.vncpassword}"
-        f.puts "usb=1"
-        f.puts "usbdevice=tablet"
+    begin
+      File.open(config_path, "w") do |f|
+        f.puts  "name='#{name}'"
+        f.puts  "memory='#{memory}'"
+        f.puts  "vcpus='#{vcpus}'"
+        f.puts  "vif=#{vif.to_s}"
+        f.puts  "disk=#{disk.to_s}"
+
+        if instance.template.type == Template::PVM
+          f.puts "bootloader='pygrub'"
+        elsif instance.template.type == Template::HVM
+          f.puts "builder='hvm'"
+          f.puts "vnc='1'"
+          f.puts "vnclisten='0.0.0.0'"
+          f.puts "vncpassword='#{instance.vncpassword}'"
+          f.puts "usb='1'"
+          f.puts "usbdevice='tablet'"
+        end
       end
+      return true
+    rescue
+      return false
     end
+  end
+
+  def get_ip_from_mac(bridge, mac)
+    ip = `arp-scan -I #{bridge} -T #{mac} 192.168.0.0/24 | grep #{mac} | awk '{print $1}'`
+    ip.to_s.gsub(/\n/,'')
   end
 
   def instance_root

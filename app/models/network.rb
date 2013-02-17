@@ -16,5 +16,11 @@ class Network
 
   ## Validation
   validates :network_spec, :presence => true
-  validates :instance, :presence => true
+
+  before_create :generate_mac
+
+  private
+  def generate_mac
+    self.mac = "00:16" + Digest::SHA1.hexdigest(self._id.to_s + Time.now.to_s)[0...8].insert(2, ":").insert(5, ":").insert(8, ":")
+  end
 end

@@ -5,8 +5,8 @@
         <%= content_for(:breadcrumbs) %>
       <% else %>
         <ul id="breadcrumbs" class="breadcrumbs">
-          <li><%= link_to "Dashboard", root_path %></li>
-          <li class="current"><%= link_to "Unknown", "#unknown" %></li>
+          <li><%= link_to (content_for?(:pageTitle) ? content_for(:pageTitle) : "Dashboard"), root_path %></li>
+          <li class="current"><%= link_to (content_for?(:pageTitle) ? content_for(:pageSubTitle) : "Unknown"), "#unknown" %></li>
         </ul>
       <% end %>
     </div>

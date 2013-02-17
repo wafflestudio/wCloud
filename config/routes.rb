@@ -14,6 +14,7 @@ WCloud::Application.routes.draw do
     get "/snapshot" => "instances#snapshot", :on => :member
     put "/restore" => "instances#restore", :on => :member
     get "/duplicate" => "instances#duplicate", :on => :member
+    get "/update_state" => "instances#update_state", :on => :collection
   end
 
   ## DISK

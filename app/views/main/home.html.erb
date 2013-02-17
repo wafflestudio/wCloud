@@ -1,103 +1,79 @@
-<div class="wrapper">
-  <ul class="middleNavR">
-    <li><%= link_to (image_tag("/assets/Aquincum/icons/middlenav/add.png")), new_instance_path, :class => "tipN", :title => "Create Intance" %></li>
-    <li><%= link_to_function (image_tag("/assets/Aquincum/icons/middlenav/upload.png")), "alert('not yet')", :class => "tipN", :title => "Upload Files" %></li>
-    <li><%= link_to_function (image_tag("/assets/Aquincum/icons/middlenav/dialogs.png")), "alert('not yet')", :class => "tipN", :title => "Messages" %><strong><%= current_user.unread_usages.count %></strong></li>
-    <li><%= link_to (image_tag("/assets/Aquincum/icons/middlenav/stats.png")), instances_path, :class => "tipN", :title => "Check Statistics" %></li>
-  </ul>
-
-  <!-- Chart -->
-  <div class="widget chartWrapper">
-    <div class="whead"><h6>Statistics</h6>
-      <div class="titleOpt">
-        <a href="#" data-toggle="dropdown"><span class="icos-cog3"></span></a>
-        <ul class="dropdown-menu pull-right">
-          <li><a href="#"><span class="icon-broadcast-2"></span>Network</a></li>
-          <li><a href="#"><span class="icon-database"></span>Disk</a></li>
-          <li><a href="#"><span class="icon-calculate"></span>CPU</a></li>
-        </ul>
-      </div>
-    </div>
-    <div class="body"><div class="chart"></div></div>
-  </div>
-
-  <!-- 6 + 6 -->
-  <div class="fluid">
-    <!-- Messages #1 -->
-    <div class="widget grid6">
-      <div class="whead">
-        <h6>Usages(not yet)</h6>
-        <div class="on_off">
-          <span class="icon-reload-CW"></span>
-          <input type="checkbox" id="check1" checked="checked" name="chbox" />
-        </div>            
-      </div>
-
-      <ul class="messagesOne">
-        <li class="by_user">
-        <a href="#" title=""><img src="/assets/Aquincum/live/face1.png" alt="" /></a>
-        <div class="messageArea">
-          <span class="aro"></span>
-          <div class="infoRow">
-            <span class="name"><strong>John</strong> says:</span>
-            <span class="time">3 hours ago</span>
-          </div>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam vel est enim, vel eleifend felis. Ut volutpat, leo eget euismod scelerisque, eros purus lacinia velit, nec rhoncus mi dui eleifend orci. 
-          Phasellus ut sem urna, id congue libero. Nulla eget arcu vel massa suscipit ultricies ac id velit
-        </div>
-        </li>
-
-        <li class="divider"><span></span></li>
-
-        <li class="by_me">
-        <a href="#" title=""><img src="/assets/Aquincum/live/face2.png" alt="" /></a>
-        <div class="messageArea">
-          <span class="aro"></span>
-          <div class="infoRow">
-            <span class="name"><strong>Eugene</strong> says:</span>
-            <span class="time">3 hours ago</span>
-          </div>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam vel est enim, vel eleifend felis. Ut volutpat, leo eget euismod scelerisque, eros purus lacinia velit, nec rhoncus mi dui eleifend orci. 
-          Phasellus ut sem urna, id congue libero. Nulla eget arcu vel massa suscipit ultricies ac id velit
-        </div>
-        </li>
-
-        <li class="by_me">
-        <a href="#" title=""><img src="/assets/Aquincum/live/face2.png" alt="" /></a>
-        <div class="messageArea">
-          <span class="aro"></span>
-          <div class="infoRow">
-            <span class="name"><strong>Eugene</strong> says:</span>
-            <span class="time">3 hours ago</span>
-          </div>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam vel est enim, vel eleifend felis. Ut volutpat, leo eget euismod scelerisque, eros purus lacinia velit, nec rhoncus mi dui eleifend orci. 
-          Phasellus ut sem urna, id congue libero. Nulla eget arcu vel massa suscipit ultricies ac id velit
-        </div>
-        </li>
+<!-- Chart -->
+<div class="widget chartWrapper">
+  <div class="whead"><h6>Statistics</h6>
+    <div class="titleOpt">
+      <a href="#" data-toggle="dropdown"><span class="icos-cog3"></span></a>
+      <ul class="dropdown-menu pull-right">
+        <li><a href="#"><span class="icon-broadcast-2"></span>Network</a></li>
+        <li><a href="#"><span class="icon-database"></span>Disk</a></li>
+        <li><a href="#"><span class="icon-calculate"></span>CPU</a></li>
       </ul>
     </div>
-
-    <!-- Calendar -->
-    <div class="widget grid6">
-      <div class="whead">
-        <h6>Calendar(not yet)</h6>
-      </div>
-      <div id="calendar"></div>
-    </div>
   </div>
+  <div class="body"><div class="chart"></div></div>
 </div>
 
-<script type="text/javascript">
-$(document).ready(function() {
-    $('.tipN').click(function(e) {
-        var title = $(this).attr("original-title");
-        $.get($(this).attr("href"), function(html) {
-          $('#customDialog').html(html);
-          $('#customDialog').dialog("option", "title", title);
-          $('#customDialog').dialog("open");
-        });
-        return false;
-    });
-});
-</script>
-<div id="customDialog" title="Unknown"></div>
+<!-- 6 + 6 -->
+<div class="fluid">
+  <!-- Messages #1 -->
+  <div class="widget grid6">
+    <div class="whead">
+      <h6>Usages(not yet)</h6>
+      <div class="on_off">
+        <span class="icon-reload-CW"></span>
+        <input type="checkbox" id="check1" checked="checked" name="chbox" />
+      </div>            
+    </div>
+
+    <ul class="messagesOne">
+      <li class="by_user">
+      <a href="#" title=""><img src="/assets/Aquincum/live/face1.png" alt="" /></a>
+      <div class="messageArea">
+        <span class="aro"></span>
+        <div class="infoRow">
+          <span class="name"><strong>John</strong> says:</span>
+          <span class="time">3 hours ago</span>
+        </div>
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam vel est enim, vel eleifend felis. Ut volutpat, leo eget euismod scelerisque, eros purus lacinia velit, nec rhoncus mi dui eleifend orci. 
+        Phasellus ut sem urna, id congue libero. Nulla eget arcu vel massa suscipit ultricies ac id velit
+      </div>
+      </li>
+
+      <li class="divider"><span></span></li>
+
+      <li class="by_me">
+      <a href="#" title=""><img src="/assets/Aquincum/live/face2.png" alt="" /></a>
+      <div class="messageArea">
+        <span class="aro"></span>
+        <div class="infoRow">
+          <span class="name"><strong>Eugene</strong> says:</span>
+          <span class="time">3 hours ago</span>
+        </div>
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam vel est enim, vel eleifend felis. Ut volutpat, leo eget euismod scelerisque, eros purus lacinia velit, nec rhoncus mi dui eleifend orci. 
+        Phasellus ut sem urna, id congue libero. Nulla eget arcu vel massa suscipit ultricies ac id velit
+      </div>
+      </li>
+
+      <li class="by_me">
+      <a href="#" title=""><img src="/assets/Aquincum/live/face2.png" alt="" /></a>
+      <div class="messageArea">
+        <span class="aro"></span>
+        <div class="infoRow">
+          <span class="name"><strong>Eugene</strong> says:</span>
+          <span class="time">3 hours ago</span>
+        </div>
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam vel est enim, vel eleifend felis. Ut volutpat, leo eget euismod scelerisque, eros purus lacinia velit, nec rhoncus mi dui eleifend orci. 
+        Phasellus ut sem urna, id congue libero. Nulla eget arcu vel massa suscipit ultricies ac id velit
+      </div>
+      </li>
+    </ul>
+  </div>
+
+  <!-- Calendar -->
+  <div class="widget grid6">
+    <div class="whead">
+      <h6>Calendar(not yet)</h6>
+    </div>
+    <div id="calendar"></div>
+  </div>
+</div>

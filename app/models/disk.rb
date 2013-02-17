@@ -28,7 +28,6 @@ class Disk
 
   ## Validation
   validates :disk_spec, :presence => true
-  validates :instance, :presence => true
 
   before_save :set_size
   

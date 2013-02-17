@@ -71,7 +71,29 @@
         <%= yield :breadLine %>
 
         <!-- Main content -->
-        <%= yield %>
+        <div class="wrapper">
+          <ul class="middleNavR">
+            <li><%= link_to (image_tag("/assets/Aquincum/icons/middlenav/add.png")), new_instance_path, :class => "tipN", :title => "Create Intance" %></li>
+            <li><%= link_to_function (image_tag("/assets/Aquincum/icons/middlenav/upload.png")), "alert('not yet')", :class => "tipN", :title => "Upload Files" %></li>
+            <li><%= link_to_function (image_tag("/assets/Aquincum/icons/middlenav/dialogs.png")), "alert('not yet')", :class => "tipN", :title => "Messages" %><strong><%= current_user.unread_usages.count %></strong></li>
+            <li><%= link_to (image_tag("/assets/Aquincum/icons/middlenav/stats.png")), instances_path, :class => "tipN", :title => "Check Statistics" %></li>
+          </ul>
+          <%= yield %>
+          <script type="text/javascript">
+            $(document).ready(function() {
+                $('.tipN').click(function(e) {
+                  var title = $(this).attr("original-title");
+                  $.get($(this).attr("href"), function(html) {
+                    $('#customDialog').html(html);
+                    $('#customDialog').dialog("option", "title", title);
+                    $('#customDialog').dialog("open");
+                    });
+              return false;
+              });
+            });
+          </script>
+          <div id="customDialog" title="Unknown"></div>
+        </div>
         <!-- Main content ends -->
       </div>
       <!-- Content ends -->

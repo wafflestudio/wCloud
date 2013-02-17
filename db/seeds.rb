@@ -84,7 +84,7 @@ disk_specs.each do |spec|
 end
 
 network_specs = [
-{:name => "Private Network", :description => "Using ipTIME", :type => NetworkSpec::PRIVATE}
+{:name => "Private Network", :description => "Using ipTIME", :type => NetworkSpec::PRIVATE, :bridge => "xebr0"}
 ]
 
 puts "MODEL::NetworkSpec"
@@ -95,6 +95,7 @@ network_specs.each do |spec|
 	e.name = spec[:name]
 	e.description = spec[:description]
 	e.type = spec[:type]
+	e.bridge = spec[:bridge]
 	puts "Error #{e.error.full_messages.to_s}" unless e.save
 end
 
