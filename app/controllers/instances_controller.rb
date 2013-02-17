@@ -82,7 +82,6 @@ class InstancesController < ApplicationController
         if !ip.empty? && network.update_attribute(:ip, ip)
           instance.update_attribute(:state, Instance::RUNNING)
         end
-      end
       when Instance::REBOOTING
         info = get_info(instance._id)
         if !info.empty? && info.first['domid'] != instance.domid
