@@ -1,6 +1,8 @@
 class InstancesController < ApplicationController
   layout :false, :only => [:new, :edit]
 
+  before_filter :update_state, :only => [:index]
+
   def index
     @instances = current_user.instances.page(params[:page]).per(3)
   end
@@ -18,6 +20,7 @@ class InstancesController < ApplicationController
     @template = @instance.template
 
     @disk = @instance.disks.new
+    @disk.user = current_user
     @disk.disk_spec = DiskSpec.first
     @disk.path = instance_dir(@instance)+"/"+@disk._id+".vhd"
     @disk.vdev = @instance.template.type == Template::PVM ? "xvda" : "hda"
@@ -25,6 +28,7 @@ class InstancesController < ApplicationController
     create_disk(@disk, @template.path) if @disk.save
 
     @network = @instance.networks.new
+    @network.user = current_user
     @network.network_spec = NetworkSpec.first
     @network.mac =  ""
     @network.ip =  ""
@@ -58,11 +62,17 @@ class InstancesController < ApplicationController
 
   def destroy
     @instance = Instance.find(params[:id])
-    clean_vm(@instance)
-    @instance.destroy 
+    if @instance.protected
+    else
+      destroy_vm(@instance)
+      clean_vm(@instance)
+      @instance.destroy 
+    end
+    redirect_to instances_path
   end
 
   def update_state
+    json = []
     Instance.all.each do |instance|
       case instance.state
       when Instance::CREATING
@@ -73,7 +83,8 @@ class InstancesController < ApplicationController
         end
       when Instance::STOPPING
         info = get_info(instance._id)
-        if info.empty? && network.update_attribute(:ip, "")
+        network = instance.networks.first
+        if info.empty? && !network.nil? && network.update_attribute(:ip, "")
           instance.update_attribute(:state, Instance::STOPPED)
         end
       when Instance::STARTING
@@ -88,39 +99,65 @@ class InstancesController < ApplicationController
           instance.update_attributes({:state => Instance::RUNNING, :domid => info.first['domid']})
         end
       end
+      json << {:id => instance._id, :name => instance.name, :state => instance.state_to_string}
     end
+    #render :json => json
   end
 
   def stop
     @instance = Instance.find(params[:id])
     if @instance.state == Instance::RUNNING && @instance.update_attribute(:state, Instance::STOPPING)
-      shutdown_vm(@instance)
+      if shutdown_vm(@instance)
+        json = {:action => "stop", :status => true, :msg => ""}
+      else
+        json = {:action => "stop", :status => false, :msg => "Failed to stop instance"}
+      end
     end
+    render :json => json
   end
   def start
     @instance = Instance.find(params[:id])
     if @instance.state == Instance::STOPPED && @instance.update_attribute(:state, Instance::STARTING)
-      start_vm(@instance)
+      if create_vm(@instance)
+        json = {:action => "start", :status => true, :msg => ""}
+      else
+        json = {:action => "start", :status => false, :msg => "Failed to start instance"}
+      end
     end
+    render :json => json
   end
   def reboot
     @instance = Instance.find(params[:id])
     if @instance.state == Instance::RUNNING && @instance.update_attribute(:state, Instance::REBOOTING)
-      restart_vm(@instance)
+      if reboot_vm(@instance)
+        json = {:action => "restart", :status => true, :msg => ""}
+      else
+        json = {:action => "restart", :status => false, :msg => "Failed to restart instance"}
+      end
     end
+    render :json => json
   end
   def forcestop
     @instance = Instance.find(params[:id])
     if @instance.state == Instance::RUNNING && @instance.update_attribute(:state, Instance::STOPPING)
-      destroy_vm(@instance)
+      if destroy_vm(@instance)
+        json = {:action => "forcestop", :status => true, :msg => ""}
+      else
+        json = {:action => "forcestop", :status => false, :msg => "Failed to forcestop instance"}
+      end
     end
+    render :json => json
   end
   def forcereboot
     @instance = Instance.find(params[:id])
     if @instance.state == Instance::RUNNING && @instance.update_attribute(:state, Instance::REBOOTING)
-      destroy_vm(@instance)
-      create_vm(@instance)
+      if destroy_vm(@instance) && create_vm(@instance)
+        json = {:action => "forcereboot", :status => true, :msg => ""}
+      else
+        json = {:action => "forcereboot", :status => false, :msg => "Failed to forcereboot instance"}
+      end
     end
+    render :json => json
   end
   def snapshot
     @instance = Instance.find(params[:id])

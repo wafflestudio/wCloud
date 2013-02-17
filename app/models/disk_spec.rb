@@ -16,4 +16,9 @@ class DiskSpec
 
   ## Relation
   has_many :disks, :dependent => :destroy
+
+  def type_to_string
+    types = ["Unknown", "HDD", "CDROM"]
+    types[self.type]
+  end
 end

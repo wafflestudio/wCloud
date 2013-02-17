@@ -74,6 +74,7 @@
         <div class="wrapper">
           <ul class="middleNavR">
             <li><%= link_to (image_tag("/assets/Aquincum/icons/middlenav/add.png")), new_instance_path, :class => "tipN", :title => "Create Intance" %></li>
+            <li><%= link_to (image_tag("/assets/Aquincum/icons/middlenav/add.png")), new_disk_path, :class => "tipN", :title => "Create Disk" %></li>
             <li><%= link_to_function (image_tag("/assets/Aquincum/icons/middlenav/upload.png")), "alert('not yet')", :class => "tipN", :title => "Upload Files" %></li>
             <li><%= link_to_function (image_tag("/assets/Aquincum/icons/middlenav/dialogs.png")), "alert('not yet')", :class => "tipN", :title => "Messages" %><strong><%= current_user.unread_usages.count %></strong></li>
             <li><%= link_to (image_tag("/assets/Aquincum/icons/middlenav/stats.png")), instances_path, :class => "tipN", :title => "Check Statistics" %></li>
@@ -83,13 +84,18 @@
             $(document).ready(function() {
                 $('.tipN').click(function(e) {
                   var title = $(this).attr("original-title");
+                  $('#ajax-loading').show();
                   $.get($(this).attr("href"), function(html) {
                     $('#customDialog').html(html);
                     $('#customDialog').dialog("option", "title", title);
                     $('#customDialog').dialog("open");
+                    $('form[data-remote=true]').submit(function() {
+                      $('#customDialog').dialog("close");
                     });
-              return false;
-              });
+                  });
+                  $('#ajax-loading').hide();
+                  return false;
+                });
             });
           </script>
           <div id="customDialog" title="Unknown"></div>
@@ -102,5 +108,8 @@
         <%= yield %>
       </div>
     <% end %>
+    <div id="ajax-loading" style="display: none; position: absolute; top:0; left: 0; width: 100%; height: 100%;">
+      <img src="/assets/Aquincum/elements/loaders/4.gif" style="position: relative; top: 50%; left: 50%;">
+    </div>
   </body>
 </html>

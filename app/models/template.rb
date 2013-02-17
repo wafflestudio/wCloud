@@ -24,7 +24,7 @@ class Template
     :styles => {
     :original => ['1920x1680>', :png],
     :small    => ['100x100#',     :png],
-    :thumb    => ['30x30#',     :png] #TODO
+    :thumb    => ['36x36#',     :png] #TODO
   }
 
   ## Relation

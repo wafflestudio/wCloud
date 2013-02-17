@@ -1,15 +1,29 @@
 class DisksController < ApplicationController
+  layout :false, :only => [:new, :edit]
+
   def index
-    @disk = current_user.disks
+    @disks = current_user.disks.page(params[:page]).per(10)
   end
 
   def new
     @disk = Disk.new
+    @disk_specs = DiskSpec.where(:active => true)
   end
 
   def create
-    @disk = Disk.new(params[:disk])
-    @disk.save 
+    @disk = current_user.disks.new(params[:disk])
+    @disk.path = disk_root+"/"+@disk._id+".vhd"
+
+    if @disk.save
+      if create_disk(@disk, "")
+        flash[:return] = {:status => true, :msg => ""}
+      else
+        flash[:return] = {:status => false, :msg => "Failed to create instance"}
+        destroy_disk(@disk) if @disk.destroy
+      end
+    else
+      flash[:return] = {:status => false, :msg => @disk.errors.full_messages.to_s}
+    end
   end
 
   def show
@@ -27,7 +41,11 @@ class DisksController < ApplicationController
 
   def destroy
     @disk = Disk.find(params[:id])
-    @disk.destroy 
+    if @disk.protected
+    else
+      @disk.destroy 
+    end
+    redirect_to disks_path
   end
 
   def attach

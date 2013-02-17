@@ -1,12 +1,12 @@
 module MainHelper
   def get_info(domname = "")
     json = `#{xl} list -l #{domname}`
-    JSON.parse(json)
+    json && json.length >=2 ? JSON.parse(json) : []
   end
 
   def get_perf
     json = `#{xen_perf}`
-    JSON.parse(json)
+    json && json.length >=2 ? JSON.parse(json) : []
   end
 
   def create_vm(instance)
@@ -22,7 +22,7 @@ module MainHelper
     system("#{xl} destroy #{instance._id}")
   end
 
-  def stutdown_vm(instance)
+  def shutdown_vm(instance)
     return false unless instance.is_a?(Instance)
 
     system("#{xl} shutdown #{instance._id}")
@@ -64,10 +64,16 @@ module MainHelper
     return false unless disk.is_a?(Disk)
 
     if parent_path.nil? || parent_path.empty?
-      system("#{vhd_util} create -n #{disk.path} -s #{disk.size * Disk::GB}")
+      system("#{vhd_util} create -n #{disk.path} -s #{disk.size}")
     else
       system("#{vhd_util} snapshot -n #{disk.path} -p #{parent_path}")
     end
+  end
+
+  def destroy_disk(disk)
+    return false unless disk.is_a?(Disk)
+
+    system("rm -f #{disk.path}")
   end
 
   def attach_disk(disk, instance)
@@ -110,8 +116,8 @@ module MainHelper
     memory = instance.instance_spec.ram
     vcpus = instance.instance_spec.core
     vif = instance.networks.map {|network|
-      #"mac=#{network.mac},bridge=#{network.network_spec.bridge}"
-      "bridge=#{network.network_spec.bridge}"
+      "mac=#{network.mac},bridge=#{network.network_spec.bridge}"
+      #"bridge=#{network.network_spec.bridge}"
     }
     disk = instance.disks.map {|disk|
       if disk.disk_spec.type == DiskSpec::HDD

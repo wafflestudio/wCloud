@@ -27,10 +27,10 @@ users.each do |user|
 end
 
 templates = [
-{:filename => "CentOS-6.3-2013.02.15.vhd", :name => "CentOS 6.3", :description => "Minimal", :type => Template::PVM, :arch => Template::X86_64},
-{:filename => "Ubuntu-12.04.1-2013.02.15.vhd", :name => "Ubunutu 12.04.1", :description => "LTS", :type => Template::PVM, :arch => Template::X86_64},
-{:filename => "Debian-6.0-2013.02.15.vhd", :name => "Deiban 6.0", :description => "", :type => Template::PVM, :arch => Template::X86_64},
-{:filename => "Windows-8-2013.02.15.vhd", :name => "Windows 8", :description => "Trial 90 days", :type => Template::HVM, :arch => Template::X86_64}
+{:filename => "CentOS-6.3-2013.02.15.vhd", :logoname => "centos-logo.png", :name => "CentOS 6.3", :description => "Minimal", :type => Template::PVM, :arch => Template::X86_64},
+{:filename => "Ubuntu-12.04.1-2013.02.15.vhd", :logoname => "ubuntu-logo.png", :name => "Ubunutu 12.04.1", :description => "LTS", :type => Template::PVM, :arch => Template::X86_64},
+{:filename => "Debian-6.0-2013.02.15.vhd", :logoname => "debian-logo.png", :name => "Deiban 6.0", :description => "", :type => Template::PVM, :arch => Template::X86_64},
+{:filename => "Windows-8-2013.02.15.vhd", :logoname => "windows-logo.png", :name => "Windows 8", :description => "Trial 90 days", :type => Template::HVM, :arch => Template::X86_64}
 ]
 
 puts "MODEL::Template"
@@ -38,6 +38,7 @@ puts "MODEL::Template"
 templates.each do |template|
 	e = Template.new
 	e.path = Cloud::TEMPLATE_ROOT+"/"+template[:filename]
+    e.logo =  File.open(Rails.root+"db/#{template[:logoname]}")
 	e.active = File.exist?(e.path)
 	e.name = template[:name]
 	e.description = template[:description]

@@ -14,11 +14,13 @@ class Disk
   field :description, type: String, :default => ""
   field :size, type: Integer, :default => 50 * GB
 
+  field :protected, type: Boolean, :default => true
   field :attached, type: Boolean, :default => false
   field :vdev, type: String, :default => ""
   field :mode, type: Integer, :default => WRITE
 
   ## Relation
+  belongs_to :user
   belongs_to :disk_spec
   belongs_to :instance
 
@@ -27,9 +29,15 @@ class Disk
   has_many :children, :class_name => "Disk", :inverse_of => :parent
 
   ## Validation
+  validates :user, :presence => true
   validates :disk_spec, :presence => true
 
   before_save :set_size
+
+  def mode_to_string
+    modes = ["Unknown", "Write", "Read only"]
+    modes[self.mode]
+  end
   
   private
   def set_size

@@ -18,7 +18,10 @@
       <tbody>
         <% @templates.each do |template| %>
           <tr>
-            <td><a href="/assets/Aquincum/big.png" title="" class="lightbox"><img src="/assets/Aquincum/live/face1.png" alt="" style="margin-top: 7px;"></a></td>
+            <td>
+              <a href="<%= template_path(template) %>" title="<%= template.description %>" class="lightbox">
+                <%= image_tag template.logo.url(:thumb), :style => "margin-top: 7px;" %>
+              </a>
             <td><%= template.name %></td>
             <td><%= template.description %></td>
             <td><%= template.arch %>bit</td>

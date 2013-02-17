@@ -9,6 +9,7 @@ gem 'rails', '3.2.11'
 gem 'mongoid'
 gem 'bson_ext'
 gem "mongoid-paperclip", :require => "mongoid_paperclip"
+gem 'cocaine'
 
 # AUTHENTICATION
 gem 'devise'

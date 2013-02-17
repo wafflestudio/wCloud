@@ -10,7 +10,7 @@ class Instance
 
   STOPPING=5
   STOPPED=6
-  STRATING=7
+  STARTING=7
   REBOOTING=8
 
   ## Field
@@ -41,7 +41,7 @@ class Instance
   validates :template, :presence => true
 
   ## Callback
-  before_save :set_default
+  before_update :set_default
 
   def set_default
     case self.state

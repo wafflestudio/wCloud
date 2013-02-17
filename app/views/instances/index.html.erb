@@ -5,6 +5,9 @@
   <div class="widget check grid12">
     <div class="whead">
       <h6>Instances</h6>
+      <div class="titleOpt">
+        <a href="<%= instances_path %>"><span class="icos-refresh2"></span></a>
+      </div>
     </div>
     <table cellpadding="0" cellspacing="0" width="100%" class="tDefault checkAll tMedia">
       <thead>
@@ -23,18 +26,34 @@
           <td colspan="7">
             <div class="itemActions">
               <label>Action:</label>
-              <select class="styled">
+              <select id="instance-action" class="styled">
                 <option value="unknown">Select Action</option>
                 <option value="stop">Stop</option>
                 <option value="start">Start</option>
                 <option value="reboot">Reboot</option>
-                <option value="destroy">Destroy</option>
                 <option value="forcestop">Force Stop</option>
                 <option value="forcereboot">Force Reboot</option>
-                <option value="restor">Restore</option>
+                <option value="restore">Restore</option>
                 <option value="duplicate">Duplicate</option>
                 <option value="snapshot">Snapshot</option>
               </select>
+              <script type="text/javascript">
+                $(document).ready(function() {
+                    $('#instance-action').change(function() {
+                        var action = $(this).selected().val();
+                        var id = $('.instance-radio-btn:checked').val()
+                        if(id == null || id == undefined) {
+                          alert('Select instance');
+                        } else {
+                          $('#ajax-loading').show();
+                          $.post('/instances/'+id+'/'+action, function(json) {
+                            alert(json.action + ":" + json.msg);
+                          })
+                          $('#ajax-loading').hide();
+                        }
+                    })
+                });
+              </script>
             </div>
             <div class="tPages">
               <%= paginate @instances %>
@@ -45,10 +64,10 @@
       <tbody>
         <% @instances.each do |instance| %>
           <tr>
-            <td><input type="radio" name="checkRow" id="instance-<%= instance._id %>" /></td>
+            <td><input type="radio" name="checkRow" id="instance-<%= instance._id %>" class="instance-radio-btn" value="<%= instance._id %>" /></td>
             <td>
               <a href="<%= template_path(instance.template) %>" title="<%= instance.template.description %>" class="lightbox">
-                <img src="/assets/Aquincum/live/face3.png" alt="" style="vertical-align: middle" />
+                <%= image_tag instance.template.logo.url(:thumb), :style => "vertical-align: middle;" %>
                 <%= "#{instance.template.name}(#{instance.template.arch})" %>
               </a>
             </td>
@@ -59,7 +78,7 @@
             <td class="tableActs">
               <%= link_to '<span class="iconb" data-icon="&#xe271;"></span>'.html_safe, instance_path(instance), :class => "tablectrl_small bDefault tipS", :title => "Info" %>
               <%= link_to '<span class="iconb" data-icon="&#xe1f7;"></span>'.html_safe, edit_instance_path(instance), :class => "tablectrl_small bDefault tipS", :title => "Settings" %>
-              <%= link_to '<span class="iconb" data-icon="&#xe136;"></span>'.html_safe, instance_path(instance), :class => "tablectrl_small bDefault tipS", :title => "Destroy", :confirm => "Are you sure?" %>
+              <%= link_to '<span class="iconb" data-icon="&#xe136;"></span>'.html_safe, instance_path(instance), :method => "delete",  :class => "tablectrl_small bDefault tipS", :title => "Destroy", :confirm => "Are you sure?" %>
             </td>
           </tr>
         <% end %>

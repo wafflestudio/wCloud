@@ -6,14 +6,14 @@ WCloud::Application.routes.draw do
 
   ## INSTANCE
   resources :instances do
-    get "/stop" => "instances#stop", :on => :member
-    get "/start" => "instances#start", :on => :member
-    get "/reboot" => "instances#reboot", :on => :member
-    get "/forcestop" => "instances#forcestop", :on => :member
-    get "/forcereboot" => "instances#forcereboot", :on => :member
-    get "/snapshot" => "instances#snapshot", :on => :member
-    put "/restore" => "instances#restore", :on => :member
-    get "/duplicate" => "instances#duplicate", :on => :member
+    post "/stop" => "instances#stop", :on => :member
+    post "/start" => "instances#start", :on => :member
+    post "/reboot" => "instances#reboot", :on => :member
+    post "/forcestop" => "instances#forcestop", :on => :member
+    post "/forcereboot" => "instances#forcereboot", :on => :member
+    post "/snapshot" => "instances#snapshot", :on => :member
+    post "/restore" => "instances#restore", :on => :member
+    post "/duplicate" => "instances#duplicate", :on => :member
     get "/update_state" => "instances#update_state", :on => :collection
   end
 
