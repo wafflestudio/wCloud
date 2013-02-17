@@ -49,7 +49,7 @@ module MainHelper
 
 
   def rename_domname(domname, newdomname)
-    system("#{xl} rename #{domname} #{newdomname}")
+    system("#{xl} rename #{domname} #{newdomname}") #FIXME
   end
 
   def domname_to_domid(domname)
