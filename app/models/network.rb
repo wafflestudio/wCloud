@@ -13,7 +13,6 @@ class Network
   belongs_to :user
   belongs_to :network_spec
   belongs_to :instance
-  has_one :network_pool
 
   ## Validation
   validates :user, :presence => true

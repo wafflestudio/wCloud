@@ -1,0 +1,56 @@
+<% render "default" %>
+
+<div class="fluid">
+  <!-- Media table -->
+  <div class="widget check grid12">
+    <div class="whead">
+      <h6>Templates</h6>
+      <div class="titleOpt">
+        <a href="<%= templates_path %>"><span class="icos-refresh2"></span></a>
+      </div>
+    </div>
+    <table cellpadding="0" cellspacing="0" width="100%" class="tDefault checkAll tMedia">
+      <thead>
+        <tr>
+          <td><img src="/assets/Aquincum/elements/other/tableArrows.png" alt="" /></td>
+          <td width="50">Logo</td>
+          <td>Name</td>
+          <td width="100">Description</td>
+          <td width="100">Arch</td>
+          <td width="180">Instance</td>
+          <td width="150" class="sortCol"><div>Created At<span></span></div></td>
+          <td width="100">Actions</td>
+        </tr>
+      </thead>
+      <tbody>
+        <% @templates.each do |template| %>
+          <tr>
+            <td><input type="radio" name="checkRow" id="template-<%= template._id %>" class="template-radio-btn" value="<%= template._id %>" /></td>
+            <td>
+              <a href="<%= template_path(template) %>" title="<%= template.name %>" class="lightbox">
+                <%= image_tag template.logo.url(:thumb), :style => "vertical-align: middle;" %>
+              </a>
+            </td>
+            <td><%= link_to template.name, template_path(template), :title => template.description, :class => "lightbox" %></td>
+            <td><%= template.description %></td>
+            <td><%= template.arch %>bit</td>
+            <td>
+              <% unless template.instance.nil? %>
+                <a href="<%= instance_path(template.instance) %>" title="<%= template.instance.description %>" class="lightbox">
+                  <%= image_tag template.instance.template.logo.url(:thumb), :style => "vertical-align: middle;" %>
+                  <%= "#{template.instance.name}" %>
+                </a>
+              <% end %>
+            </td>
+            <td><%= template.created_at %></td>
+            <td class="tableActs">
+              <%= link_to '<span class="iconb" data-icon="&#xe271;"></span>'.html_safe, template_path(template), :class => "tablectrl_small bDefault tipS", :title => "Info" %>
+              <%= link_to '<span class="iconb" data-icon="&#xe1f7;"></span>'.html_safe, edit_template_path(template), :class => "tablectrl_small bDefault tipS", :title => "Settings" %>
+              <%= link_to '<span class="iconb" data-icon="&#xe136;"></span>'.html_safe, template_path(template), :method => "delete",  :class => "tablectrl_small bDefault tipS", :title => "Destroy", :confirm => "Are you sure?" %>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+</div>

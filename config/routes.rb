@@ -28,7 +28,7 @@ WCloud::Application.routes.draw do
   end
 
   ## NETWORK
-  resources :networks, :only => [:index, :edit, :update] do
+  resources :networks, :only => [:index, :show, :edit, :update] do
   end
 
   ## TEMPLATE

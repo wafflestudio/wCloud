@@ -1,0 +1,85 @@
+<% render "default" %>
+
+<div class="fluid">
+  <!-- Media table -->
+  <div class="widget check grid12">
+    <div class="whead">
+      <h6>Networks</h6>
+      <div class="titleOpt">
+        <a href="<%= networks_path %>"><span class="icos-refresh2"></span></a>
+      </div>
+    </div>
+    <table cellpadding="0" cellspacing="0" width="100%" class="tDefault checkAll tMedia">
+      <thead>
+        <tr>
+          <td><img src="/assets/Aquincum/elements/other/tableArrows.png" alt="" /></td>
+          <td width="180">Instance</td>
+          <td>Name</td>
+          <td width="100">IP</td>
+          <td width="100">MAC</td>
+          <td width="150">Info</td>
+          <td width="150" class="sortCol"><div>Created At<span></span></div></td>
+          <td width="100">Actions</td>
+        </tr>
+      </thead>
+      <tfoot>
+        <tr>
+          <td colspan="8">
+            <div class="itemActions">
+              <label>Action:</label>
+              <select id="network-action" class="styled">
+                <option value="unknown">Select Action</option>
+                <option value="attach">Attach</option>
+                <option value="detach">Detach</option>
+              </select>
+              <script type="text/javascript">
+                $(document).ready(function() {
+                    $('#network-action').change(function() {
+                        var action = $(this).selected().val();
+                        var id = $('.network-radio-btn:checked').val()
+                        if(id == null || id == undefined) {
+                          alert('Select network');
+                        } else {
+                          $('#ajax-loading').show();
+                          $.post('/networks/'+id+'/'+action, function(json) {
+                            $('#ajax-loading').hide();
+                            alert(json.action + ":" + json.msg);
+                          })
+                        }
+                    })
+                });
+              </script>
+            </div>
+            <div class="tPages">
+              <%= paginate @networks %>
+            </div>
+          </td>
+        </tr>
+      </tfoot>
+      <tbody>
+        <% @networks.each do |network| %>
+          <tr>
+            <td><input type="radio" name="checkRow" id="network-<%= network._id %>" class="network-radio-btn" value="<%= network._id %>" /></td>
+            <td>
+              <% unless network.instance.nil? %>
+                <a href="<%= instance_path(network.instance) %>" title="<%= network.instance.description %>" class="lightbox">
+                  <%= image_tag network.instance.template.logo.url(:thumb), :style => "vertical-align: middle;" %>
+                  <%= "#{network.instance.name}" %>
+                </a>
+              <% end %>
+            </td>
+            <td><%= link_to network.name, network_path(network), :title => network.description, :class => "lightbox" %></td>
+            <td><%= network.ip %></td>
+            <td><%= network.mac %></td>
+            <td class="fileInfo"><span><strong>Spec:</strong> <%= network.network_spec.name %></span><span><strong>Size:</strong> <%= network.network_specs.type_to_string %></span></td>
+            <td><%= network.created_at %></td>
+            <td class="tableActs">
+              <%= link_to '<span class="iconb" data-icon="&#xe271;"></span>'.html_safe, network_path(network), :class => "tablectrl_small bDefault tipS", :title => "Info" %>
+              <%= link_to '<span class="iconb" data-icon="&#xe1f7;"></span>'.html_safe, edit_network_path(network), :class => "tablectrl_small bDefault tipS", :title => "Settings" %>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+</div>

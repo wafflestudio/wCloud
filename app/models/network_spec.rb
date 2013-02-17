@@ -14,4 +14,9 @@ class NetworkSpec
 
   ## Relation
   has_many :networks, :dependent => :destroy
+
+  def type_to_string
+    types = ["Unknown", "Private"]
+    types[self.type]
+  end
 end

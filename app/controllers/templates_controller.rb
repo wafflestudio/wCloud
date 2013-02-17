@@ -1,6 +1,6 @@
 class TemplatesController < ApplicationController
   def index
-    @template = current_user.templates
+    @templates = current_user.templates
   end
 
   def new

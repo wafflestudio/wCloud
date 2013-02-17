@@ -99,22 +99,3 @@ network_specs.each do |spec|
 	e.bridge = spec[:bridge]
 	puts "Error #{e.error.full_messages.to_s}" unless e.save
 end
-
-network_pools = [
-{:ip => "192.168.0.200", :port => {}},
-{:ip => "192.168.0.201", :port => {}},
-{:ip => "192.168.0.202", :port => {}},
-{:ip => "192.168.0.203", :port => {}},
-{:ip => "192.168.0.204", :port => {}},
-{:ip => "192.168.0.205", :port => {}}
-]
-
-puts "MODEL::NetworkPool"
-
-network_pools.each do |spec|
-	e = NetworkPool.new
-	e.active = true
-	e.ip = spec[:ip]
-	e.port = spec[:port]
-	puts "Error #{e.error.full_messages.to_s}" unless e.save
-end
