@@ -52,6 +52,7 @@ class InstancesController < ApplicationController
 
   def show
     #@instance = Instance.find(params[:id])
+    #@templates = @instance.templates
     @templates = [@instance.template]
     @disks = @instance.disks
     @networks = @instance.networks
