@@ -36,6 +36,8 @@
 <%= text_area_tag :description, @template.description, {:rows => 8, :cols => "", :class => "auto"} %>
 <div>
   <span class="floatR">
+    <%= check_box_tag :active, "", {:class => "check", :checked => @template.active} %>
+    <%= label_tag :active, "Active", {:style => "float: none;"} %>
     <%= check_box_tag :protected, "", {:class => "check", :checked => @template.protected} %>
     <%= label_tag :protected, "Protected", {:style => "float: none;"} %>
   </span>

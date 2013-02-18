@@ -5,22 +5,18 @@
   <table cellpadding="0" cellspacing="0" width="100%" class="tDefault checkAll tMedia">
     <thead>
       <tr>
-        <td width="130">Name</td>
+        <td width="140">Name</td>
         <td>Description</td>
         <td width="70">Type</td>
-        <td width="50">Select</td>
       </tr>
     </thead>
     <tfoot></tfoot>
     <tbody>
-      <% @network_specs.each do |spec| %>
-        <tr>
-          <td><%= spec.name %></td>
-          <td><%= spec.description %></td>
-          <td><%= spec.type_to_string %></td>
-          <td><input type="radio" name="<%= spec._id %>" checked /></td>
-        </tr>
-      <% end %>
+      <tr>
+        <td><%= @network.network_spec.name %></td>
+        <td><%= @network.network_spec.description %></td>
+        <td><%= @network.network_spec.type_to_string %></td>
+      </tr>
     </tbody>
   </table>
 </div>
@@ -33,24 +29,22 @@
     <table cellpadding="0" cellspacing="0" width="100%" class="tDefault checkAll tMedia">
       <thead>
         <tr>
-          <td width="180">OS</td>
-          <td>Name</td>
+          <td width="140">Name</td>
+          <td>Description</td>
           <td width="70">State</td>
-          <td width="150">Created At</td>
         </tr>
       </thead>
       <tfoot></tfoot>
       <tbody>
         <tr>
           <td>
-            <a href="<%= template_path(@network.instance.template) %>" title="<%= @network.instance.template.description %>" class="lightbox">
+            <a href="<%= instance_path(@network.instance) %>" title="<%= @network.instance.description %>" class="lightbox">
               <%= image_tag @network.instance.template.logo.url(:thumb), :style => "vertical-align: middle;" %>
-              <%= "#{@network.instance.template.name}(#{@network.instance.template.arch})" %>
+              <%= @network.instance.name %>
             </a>
           </td>
-          <td><%= link_to @network.instance.name, instance_path(@network.instance), :title => @network.instance.description, :"pjax-dialog" => "" %></td>
+          <td><%= @network.description %></td>
           <td><%= @network.instance.state_to_string %></td>
-          <td><%= @network.instance.created_at %></td>
         </tr>
       </tbody>
     </table>

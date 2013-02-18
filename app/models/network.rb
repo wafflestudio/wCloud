@@ -23,6 +23,14 @@ class Network
 
   before_create :generate_mac
 
+  def can_destroy?
+    if !self.protected && self.instance.nil?
+      true
+    else
+      false
+    end
+  end
+
   private
   def generate_mac
     self.mac = "00:16:" + Digest::SHA1.hexdigest(self._id.to_s + Time.now.to_s)[0...8].insert(2, ":").insert(5, ":").insert(8, ":")

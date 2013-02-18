@@ -5,7 +5,8 @@ class TemplatesController < ApplicationController
   before_filter :check_me, :except => [:index, :new, :create]
 
   def index
-    @templates = current_user.templates
+    #@templates = current_user.templates
+    @templates = Template.all
   end
 
   def new
@@ -36,7 +37,8 @@ class TemplatesController < ApplicationController
 
   def destroy
     #@template = Template.find(params[:id])
-    @template.destroy 
+    @template.destroy if @template.can_destroy?
+    redirect_to templates_path
   end
 
   private

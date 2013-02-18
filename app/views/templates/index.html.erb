@@ -14,10 +14,9 @@
         <tr>
           <td><img src="/assets/Aquincum/elements/other/tableArrows.png" alt="" /></td>
           <td width="50">Logo</td>
-          <td>Name</td>
-          <td width="100">Description</td>
-          <td width="100">Arch</td>
-          <td width="180">Instance</td>
+          <td width="180">Name</td>
+          <td>Description</td>
+          <td width="150">Arch</td>
           <td width="150" class="sortCol"><div>Created At<span></span></div></td>
           <td width="100">Actions</td>
         </tr>
@@ -33,15 +32,7 @@
             </td>
             <td><%= link_to template.name, template_path(template), :title => template.description, :class => "lightbox" %></td>
             <td><%= template.description %></td>
-            <td><%= template.arch %>bit</td>
-            <td>
-              <% unless template.instance.nil? %>
-                <a href="<%= instance_path(template.instance) %>" title="<%= template.instance.description %>" class="lightbox">
-                  <%= image_tag template.instance.template.logo.url(:thumb), :style => "vertical-align: middle;" %>
-                  <%= "#{template.instance.name}" %>
-                </a>
-              <% end %>
-            </td>
+            <td class="fileInfo"><span><strong>Active:</strong> <%= template.active %></span><span><strong>Arch:</strong> <%= template.arch %>bit</span></td>
             <td><%= template.created_at %></td>
             <td class="tableActs">
               <%= link_to '<span class="iconb" data-icon="&#xe271;"></span>'.html_safe, summary_template_path(template), :class => "tablectrl_small bDefault tipS info-dialog", :title => "Summary" %>

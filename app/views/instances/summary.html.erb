@@ -10,25 +10,21 @@
         <td>Description</td>
         <td width="50">Arch</td>
         <td width="70">Type</td>
-        <td width="50">Select</td>
       </tr>
     </thead>
     <tfoot></tfoot>
     <tbody>
-      <% @templates.each do |template| %>
-        <tr>
-          <td>
-            <a href="<%= template_path(template) %>" title="<%= template.description %>" class="lightbox">
-              <%= image_tag template.logo.url(:thumb), :style => "margin-top: 7px;" %>
-            </a>
-          </td>
-          <td><%= template.name %></td>
-          <td><%= template.description %></td>
-          <td><%= template.arch %>bit</td>
-          <td><%= template.user.nil? ? "Base" : "Custom" %></td>
-          <td><input type="radio" checked /></td>
-        </tr>
-      <% end %>
+      <tr>
+        <td>
+          <a href="<%= template_path(@instance.template) %>" title="<%= @instance.template.description %>" class="lightbox">
+            <%= image_tag @instance.template.logo.url(:thumb), :style => "margin-top: 7px;" %>
+          </a>
+        </td>
+        <td><%= @instance.template.name %></td>
+        <td><%= @instance.template.description %></td>
+        <td><%= @instance.template.arch %>bit</td>
+        <td><%= @instance.template.user.nil? ? "Base" : "Custom" %></td>
+      </tr>
     </tbody>
   </table>
 </div>
@@ -44,20 +40,16 @@
         <td>Description</td>
         <td width="50">Ram</td>
         <td width="70">CPU</td>
-        <td width="50">Select</td>
       </tr>
     </thead>
     <tfoot></tfoot>
     <tbody>
-      <% @instance_specs.each do |spec| %>
-        <tr>
-          <td><%= spec.name %></td>
-          <td><%= spec.description %></td>
-          <td><%= spec.ram %>MB</td>
-          <td><%= spec.core %>Core</td>
-          <td><input type="radio" name="<%= spec._id %>" checked /></td>
-        </tr>
-      <% end %>
+      <tr>
+        <td><%= @instance.instance_spec.name %></td>
+        <td><%= @instance.instance_spec.description %></td>
+        <td><%= @instance.instance_spec.ram %>MB</td>
+        <td><%= @instance.instance_spec.core %>Core</td>
+      </tr>
     </tbody>
   </table>
 </div>
@@ -71,18 +63,18 @@
       <tr>
         <td width="130">Name</td>
         <td>Description</td>
+        <td width="50">Mode</td>
         <td width="70">Size</td>
-        <td width="50">Select</td>
       </tr>
     </thead>
     <tfoot></tfoot>
     <tbody>
-      <% @disks.each do |disk| %>
+      <% @instance.disks.each do |disk| %>
         <tr>
           <td><%= disk.name %></td>
           <td><%= disk.description %></td>
+          <td><%= disk.mode_to_string %></td>
           <td><%= disk.size / 1024 %>GB</td>
-          <td><input type="checkbox" name="<%= disk._id %>" checked /></td>
         </tr>
       <% end %>
     </tbody>
@@ -100,18 +92,16 @@
         <td>Description</td>
         <td width="70">IP</td>
         <td width="70">MAC</td>
-        <td width="50">Select</td>
       </tr>
     </thead>
     <tfoot></tfoot>
     <tbody>
-      <% @networks.each do |network| %>
+      <% @instance.networks.each do |network| %>
         <tr>
           <td><%= network.name %></td>
           <td><%= network.description %></td>
           <td><%= network.ip %></td>
           <td><%= network.mac %></td>
-          <td><input type="checkbox" name="<%= network._id %>" checked /></td>
         </tr>
       <% end %>
     </tbody>

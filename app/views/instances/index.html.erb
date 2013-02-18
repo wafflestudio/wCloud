@@ -15,8 +15,8 @@
           <td><img src="/assets/Aquincum/elements/other/tableArrows.png" alt="" /></td>
           <td width="180">OS</td>
           <td>Name</td>
-          <td width="70">State</td>
-          <td width="100">IP</td>
+          <td width="100">State</td>
+          <td width="150">IP</td>
           <td width="150" class="sortCol"><div>Created At<span></span></div></td>
           <td width="100">Actions</td>
         </tr>
@@ -68,7 +68,7 @@
             <td>
               <a href="<%= template_path(instance.template) %>" title="<%= instance.template.description %>" class="lightbox">
                 <%= image_tag instance.template.logo.url(:thumb), :style => "vertical-align: middle;" %>
-                <%= "#{instance.template.name}(#{instance.template.arch})" %>
+                <%= "#{instance.template.name}(#{instance.template.arch}bit)" %>
               </a>
             </td>
             <td><%= link_to instance.name, instance_path(instance), :title => instance.description, :"pjax-dialog" => "" %></td>

@@ -35,12 +35,10 @@ class DisksController < ApplicationController
 
   def summary
     #@disk = Disk.find(params[:id])
-    @disk_specs = [@disk.disk_spec]
   end
 
   def edit
     #@disk = Disk.find(params[:id])
-    @disk_specs = [@disk.disk_spec]
   end
 
   def update
@@ -50,10 +48,7 @@ class DisksController < ApplicationController
 
   def destroy
     #@disk = Disk.find(params[:id])
-    if @disk.protected
-    else
-      @disk.destroy 
-    end
+    @disk.destroy if @disk.can_destroy?
     redirect_to disks_path
   end
 

@@ -52,19 +52,10 @@ class InstancesController < ApplicationController
 
   def show
     #@instance = Instance.find(params[:id])
-    #@templates = @instance.templates
-    @templates = [@instance.template]
-    @disks = @instance.disks
-    @networks = @instance.networks
-    @instance_specs = [@instance.instance_spec]
   end
 
   def summary
     #@instance = Instance.find(params[:id])
-    @templates = [@instance.template]
-    @disks = @instance.disks
-    @networks = @instance.networks
-    @instance_specs = [@instance.instance_spec]
   end
 
   def edit
@@ -79,7 +70,7 @@ class InstancesController < ApplicationController
 
   def destroy
     #@instance = Instance.find(params[:id])
-    if @instance.protected
+    if @instance.can_destroy?
     else
       destroy_vm(@instance)
       clean_vm(@instance)

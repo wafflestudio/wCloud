@@ -5,24 +5,20 @@
   <table cellpadding="0" cellspacing="0" width="100%" class="tDefault checkAll tMedia">
     <thead>
       <tr>
-        <td width="130">Name</td>
+        <td width="140">Name</td>
         <td>Description</td>
-        <td width="50">Size</td>
+        <td width="70">Size</td>
         <td width="70">Type</td>
-        <td width="50">Select</td>
       </tr>
     </thead>
     <tfoot></tfoot>
     <tbody>
-      <% @disk_specs.each do |spec| %>
-        <tr>
-          <td><%= spec.name %></td>
-          <td><%= spec.description %></td>
-          <td><%= spec.size / 1024 %>GB</td>
-          <td><%= spec.type_to_string %></td>
-          <td><input type="radio" name="<%= spec._id %>" checked /></td>
-        </tr>
-      <% end %>
+      <tr>
+        <td><%= @disk.disk_spec.name %></td>
+        <td><%= @disk.disk_spec.description %></td>
+        <td><%= @disk.disk_spec.size / 1024 %>GB</td>
+        <td><%= @disk.disk_spec.type_to_string %></td>
+      </tr>
     </tbody>
   </table>
 </div>
@@ -35,24 +31,24 @@
     <table cellpadding="0" cellspacing="0" width="100%" class="tDefault checkAll tMedia">
       <thead>
         <tr>
-          <td width="180">OS</td>
-          <td>Name</td>
+          <td width="140">Name</td>
+          <td>Description</td>
+          <td width="70">Mode</td>
           <td width="70">State</td>
-          <td width="150">Created At</td>
         </tr>
       </thead>
       <tfoot></tfoot>
       <tbody>
         <tr>
           <td>
-            <a href="<%= template_path(@disk.instance.template) %>" title="<%= @disk.instance.template.description %>" class="lightbox">
+            <a href="<%= instance_path(@disk.instance) %>" title="<%= @disk.instance.description %>" class="lightbox">
               <%= image_tag @disk.instance.template.logo.url(:thumb), :style => "vertical-align: middle;" %>
-              <%= "#{@disk.instance.template.name}(#{@disk.instance.template.arch})" %>
+              <%= "#{@disk.instance.name}:/dev/#{@disk.vdev}" %>
             </a>
           </td>
-          <td><%= link_to @disk.instance.name, instance_path(@disk.instance), :title => @disk.instance.description, :"pjax-dialog" => "" %></td>
+          <td><%= @disk.description %></td>
+          <td><%= @disk.mode_to_string %></td>
           <td><%= @disk.instance.state_to_string %></td>
-          <td><%= @disk.instance.created_at %></td>
         </tr>
       </tbody>
     </table>

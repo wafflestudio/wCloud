@@ -33,4 +33,12 @@ class Template
 
   has_many :instances, :dependent => :destroy
   has_many :logs, :class_name => "Log", :as => "logable", :dependent => :destroy
+
+  def can_destroy?
+    if !self.protected && self.instances.empty? && !self.user.nil?
+      true
+    else
+      false
+    end
+  end
 end

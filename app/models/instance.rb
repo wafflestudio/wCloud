@@ -64,4 +64,12 @@ class Instance
     states = ["Unknown", "Creating", "Running", "Destroying", "Destroyed", "Stopping", "Stopped", "Starting", "Rebooting"]
     states[self.state]
   end
+
+  def can_destroy?
+    if !self.protected
+      true
+    else
+      false
+    end
+  end
 end

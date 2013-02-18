@@ -14,7 +14,6 @@ class NetworksController < ApplicationController
 
   def summary
     #@network = Network.find(params[:id])
-    @network_specs = [@network.network_spec]
   end
 
   def edit

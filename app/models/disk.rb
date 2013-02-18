@@ -15,7 +15,6 @@ class Disk
   field :size, type: Integer, :default => 50 * GB
 
   field :protected, type: Boolean, :default => true
-  field :attached, type: Boolean, :default => false
   field :vdev, type: String, :default => ""
   field :mode, type: Integer, :default => WRITE
 
@@ -38,6 +37,14 @@ class Disk
   def mode_to_string
     modes = ["Unknown", "Write", "Read only"]
     modes[self.mode]
+  end
+
+  def can_destroy?
+    if !self.protected && self.instance.nil?
+      true
+    else
+      false
+    end
   end
   
   private
