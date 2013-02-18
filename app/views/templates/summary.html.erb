@@ -1,0 +1,42 @@
+<% if @template.instance? %>
+  <div class="widget">
+    <div class="whead">
+      <h6><%= label_tag "Instance" %></h6>
+    </div>
+    <table cellpadding="0" cellspacing="0" width="100%" class="tDefault checkAll tMedia">
+      <thead>
+        <tr>
+          <td width="180">OS</td>
+          <td>Name</td>
+          <td width="70">State</td>
+          <td width="150">Created At</td>
+        </tr>
+      </thead>
+      <tfoot></tfoot>
+      <tbody>
+        <tr>
+          <td>
+            <a href="<%= template_path(@template.instance.template) %>" title="<%= @template.instance.template.description %>" class="lightbox">
+              <%= image_tag @template.instance.template.logo.url(:thumb), :style => "vertical-align: middle;" %>
+              <%= "#{@template.instance.template.name}(#{@template.instance.template.arch})" %>
+            </a>
+          </td>
+          <td><%= link_to @template.instance.name, instance_path(@template.instance), :title => @template.instance.description, :"pjax-dialog" => "" %></td>
+          <td><%= @template.instance.state_to_string %></td>
+          <td><%= @template.instance.created_at %></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="divider"><span></span></div>
+<% end %>
+<%= label_tag :name %>
+<%= text_field_tag :name, @template.name, {:class => "clear"} %>
+<%= label_tag :description %>
+<%= text_area_tag :description, @template.description, {:rows => 8, :cols => "", :class => "auto"} %>
+<div>
+  <span class="floatR">
+    <%= check_box_tag :protected, "", {:class => "check", :checked => @template.protected} %>
+    <%= label_tag :protected, "Protected", {:style => "float: none;"} %>
+  </span>
+</div>

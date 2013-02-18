@@ -14,7 +14,7 @@ class Instance
   REBOOTING=8
 
   ## Field
-  field :protected, type: Boolean, :default => false
+  field :protected, type: Boolean, :default => true
   field :name, type: String, :default => ""
   field :description, type: String, :default => ""
   field :ram, type: Integer, :default => 512

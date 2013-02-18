@@ -1,0 +1,12 @@
+<%= form_for(@network, :remote => true) do |f| %>
+  <%= f.label :name %>
+  <%= f.text_field :name, :class => "clear", :placeholder => "Tom's Disk" %>
+  <%= f.label :description %>
+  <%= f.text_area :description, :rows => 8, :cols => "", :class => "auto" %>
+  <div>
+    <span class="floatR">
+      <%= f.check_box :protected, :class => "check" %>
+      <%= f.label :protected, :style => "float: none;" %>
+    </span>
+  </div>
+<% end %>

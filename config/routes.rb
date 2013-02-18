@@ -5,7 +5,11 @@ WCloud::Application.routes.draw do
   devise_for :users, :path => "/user", :path_names => {:sign_up => "signup", :sign_in => "signin", :sign_out => "signout"}
 
   ## INSTANCE
-  resources :instances do
+  post "/instances/new" => "instances#new", :as => "new_instance"
+  resources :instances, :except => [:new, :edit] do
+    post "/edit" => "instances#edit", :on => :member
+    post "/summary" => "instances#summary", :on => :member
+
     post "/stop" => "instances#stop", :on => :member
     post "/start" => "instances#start", :on => :member
     post "/reboot" => "instances#reboot", :on => :member
@@ -18,7 +22,12 @@ WCloud::Application.routes.draw do
   end
 
   ## DISK
-  resources :disks do
+  post "/disks/new" => "disks#new", :as => "new_disk"
+  resources :disks, :except => [:new, :edit] do
+    post "/new" => "disks#new", :on => :collection, :as => "new_disk"
+    post "/edit" => "disks#edit", :on => :member
+    post "/summary" => "disks#summary", :on => :member
+
     put "/attach" => "disks#attach", :on => :member
     get "/detach" => "disks#detach", :on => :member
   end
@@ -28,11 +37,16 @@ WCloud::Application.routes.draw do
   end
 
   ## NETWORK
-  resources :networks, :only => [:index, :show, :edit, :update] do
+  resources :networks, :only => [:index, :show, :update] do
+    post "/edit" => "networks#edit", :on => :member
+    post "/summary" => "networks#summary", :on => :member
   end
 
   ## TEMPLATE
-  resources :templates do
+  post "/templates/new" => "templates#new", :as => "new_template"
+  resources :templates, :except => [:new, :edit] do
+    post "/edit" => "templates#edit", :on => :member
+    post "/summary" => "templates#summary", :on => :member
   end
 
   ## USAGE

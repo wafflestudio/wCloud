@@ -22,6 +22,7 @@
               <a href="<%= template_path(template) %>" title="<%= template.description %>" class="lightbox">
                 <%= image_tag template.logo.url(:thumb), :style => "margin-top: 7px;" %>
               </a>
+            </td>
             <td><%= template.name %></td>
             <td><%= template.description %></td>
             <td><%= template.arch %>bit</td>
@@ -93,7 +94,7 @@
   <%= f.text_area :description, :rows => 8, :cols => "", :class => "auto" %>
   <div>
     <span class="floatR">
-      <%= f.check_box :protected, :class => "check", :checked => true %>
+      <%= f.check_box :protected, :class => "check" %>
       <%= f.label :protected, :style => "float: none;" %>
     </span>
   </div>

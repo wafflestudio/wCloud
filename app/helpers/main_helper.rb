@@ -152,6 +152,13 @@ module MainHelper
     end
   end
 
+  def update_config(instance)
+    return false unless instance.is_a?(Instance)
+    config_path = instance_dir(instance)+"/config"
+
+    system("#{xl} config-update #{instance._id} #{config_path}")
+  end
+
   def get_ip_from_mac(bridge, mac)
     ip = `arp-scan -I #{bridge} -T #{mac} 192.168.0.0/24 | grep #{mac} | awk '{print $1}'`
     ip.to_s.gsub(/\n/,'')

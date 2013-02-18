@@ -44,8 +44,8 @@
             </td>
             <td><%= template.created_at %></td>
             <td class="tableActs">
-              <%= link_to '<span class="iconb" data-icon="&#xe271;"></span>'.html_safe, template_path(template), :class => "tablectrl_small bDefault tipS", :title => "Info" %>
-              <%= link_to '<span class="iconb" data-icon="&#xe1f7;"></span>'.html_safe, edit_template_path(template), :class => "tablectrl_small bDefault tipS", :title => "Settings" %>
+              <%= link_to '<span class="iconb" data-icon="&#xe271;"></span>'.html_safe, summary_template_path(template), :class => "tablectrl_small bDefault tipS info-dialog", :title => "Summary" %>
+              <%= link_to '<span class="iconb" data-icon="&#xe1f7;"></span>'.html_safe, edit_template_path(template), :class => "tablectrl_small bDefault tipS form-dialog", :title => "Settings" %>
               <%= link_to '<span class="iconb" data-icon="&#xe136;"></span>'.html_safe, template_path(template), :method => "delete",  :class => "tablectrl_small bDefault tipS", :title => "Destroy", :confirm => "Are you sure?" %>
             </td>
           </tr>

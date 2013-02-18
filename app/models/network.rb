@@ -8,6 +8,7 @@ class Network
 
   field :ip, type: String, :default => ""
   field :mac, type: String, :default => ""
+  field :protected, type: Boolean, :default => true
 
   ## Relation
   belongs_to :user

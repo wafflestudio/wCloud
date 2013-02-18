@@ -71,11 +71,11 @@
             <td><%= link_to network.name, network_path(network), :title => network.description, :class => "lightbox" %></td>
             <td><%= network.ip %></td>
             <td><%= network.mac %></td>
-            <td class="fileInfo"><span><strong>Spec:</strong> <%= network.network_spec.name %></span><span><strong>Size:</strong> <%= network.network_specs.type_to_string %></span></td>
+            <td class="fileInfo"><span><strong>Spec:</strong> <%= network.network_spec.name %></span><span><strong>Type:</strong> <%= network.network_spec.type_to_string %></span></td>
             <td><%= network.created_at %></td>
             <td class="tableActs">
-              <%= link_to '<span class="iconb" data-icon="&#xe271;"></span>'.html_safe, network_path(network), :class => "tablectrl_small bDefault tipS", :title => "Info" %>
-              <%= link_to '<span class="iconb" data-icon="&#xe1f7;"></span>'.html_safe, edit_network_path(network), :class => "tablectrl_small bDefault tipS", :title => "Settings" %>
+              <%= link_to '<span class="iconb" data-icon="&#xe271;"></span>'.html_safe, summary_network_path(network), :class => "tablectrl_small bDefault tipS info-dialog", :title => "Summary" %>
+              <%= link_to '<span class="iconb" data-icon="&#xe1f7;"></span>'.html_safe, edit_network_path(network), :class => "tablectrl_small bDefault tipS form-dialog", :title => "Settings" %>
             </td>
           </tr>
         <% end %>

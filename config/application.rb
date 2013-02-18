@@ -2,6 +2,7 @@ require File.expand_path('../boot', __FILE__)
 
 # Pick the frameworks you want:
 # require "active_record/railtie"
+
 require "action_controller/railtie"
 require "action_mailer/railtie"
 require "active_resource/railtie"
@@ -17,6 +18,7 @@ end
 
 module WCloud
   class Application < Rails::Application
+    config.middleware.use Rack::Pjax
     # Settings in config/environments/* take precedence over those specified here.
     # Application configuration should go into files in config/initializers
     # -- all .rb files in that directory are automatically loaded.
@@ -64,6 +66,5 @@ module WCloud
 
     # Version of your assets, change this if you want to expire all your assets
     config.assets.version = '1.0'
-    config.middleware.use Rack::Pjax
   end
 end

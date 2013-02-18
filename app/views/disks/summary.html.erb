@@ -1,0 +1,71 @@
+<div class="widget">
+  <div class="whead">
+    <h6><%= label_tag "Spec" %></h6>
+  </div>
+  <table cellpadding="0" cellspacing="0" width="100%" class="tDefault checkAll tMedia">
+    <thead>
+      <tr>
+        <td width="130">Name</td>
+        <td>Description</td>
+        <td width="50">Size</td>
+        <td width="70">Type</td>
+        <td width="50">Select</td>
+      </tr>
+    </thead>
+    <tfoot></tfoot>
+    <tbody>
+      <% @disk_specs.each do |spec| %>
+        <tr>
+          <td><%= spec.name %></td>
+          <td><%= spec.description %></td>
+          <td><%= spec.size / 1024 %>GB</td>
+          <td><%= spec.type_to_string %></td>
+          <td><input type="radio" name="<%= spec._id %>" checked /></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>
+<div class="divider"><span></span></div>
+<% if @disk.instance? %>
+  <div class="widget">
+    <div class="whead">
+      <h6><%= label_tag "Instance" %></h6>
+    </div>
+    <table cellpadding="0" cellspacing="0" width="100%" class="tDefault checkAll tMedia">
+      <thead>
+        <tr>
+          <td width="180">OS</td>
+          <td>Name</td>
+          <td width="70">State</td>
+          <td width="150">Created At</td>
+        </tr>
+      </thead>
+      <tfoot></tfoot>
+      <tbody>
+        <tr>
+          <td>
+            <a href="<%= template_path(@disk.instance.template) %>" title="<%= @disk.instance.template.description %>" class="lightbox">
+              <%= image_tag @disk.instance.template.logo.url(:thumb), :style => "vertical-align: middle;" %>
+              <%= "#{@disk.instance.template.name}(#{@disk.instance.template.arch})" %>
+            </a>
+          </td>
+          <td><%= link_to @disk.instance.name, instance_path(@disk.instance), :title => @disk.instance.description, :"pjax-dialog" => "" %></td>
+          <td><%= @disk.instance.state_to_string %></td>
+          <td><%= @disk.instance.created_at %></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="divider"><span></span></div>
+<% end %>
+<%= label_tag :name %>
+<%= text_field_tag :name, @disk.name, {:class => "clear"} %>
+<%= label_tag :description %>
+<%= text_area_tag :description, @disk.description, {:rows => 8, :cols => "", :class => "auto"} %>
+<div>
+  <span class="floatR">
+    <%= check_box_tag :protected, "", {:class => "check", :checked => @disk.protected} %>
+    <%= label_tag :protected, "Protected", {:style => "float: none;"} %>
+  </span>
+</div>

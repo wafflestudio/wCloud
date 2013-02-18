@@ -1,5 +1,8 @@
 class DisksController < ApplicationController
-  layout :false, :only => [:new, :edit]
+  layout :false, :only => [:new, :edit, :show, :summary]
+
+  before_filter :check_user
+  before_filter :check_me, :except => [:index, :new, :create]
 
   def index
     @disks = current_user.disks.page(params[:page]).per(10)
@@ -27,20 +30,26 @@ class DisksController < ApplicationController
   end
 
   def show
-    @disk = Disk.find(params[:id])
+    #@disk = Disk.find(params[:id])
+  end
+
+  def summary
+    #@disk = Disk.find(params[:id])
+    @disk_specs = [@disk.disk_spec]
   end
 
   def edit
-    @disk = Disk.find(params[:id])
+    #@disk = Disk.find(params[:id])
+    @disk_specs = [@disk.disk_spec]
   end
 
   def update
-    @disk = Disk.find(params[:id])
+    #@disk = Disk.find(params[:id])
     @disk.update_attributes(params[:disk]) 
   end
 
   def destroy
-    @disk = Disk.find(params[:id])
+    #@disk = Disk.find(params[:id])
     if @disk.protected
     else
       @disk.destroy 
@@ -49,12 +58,18 @@ class DisksController < ApplicationController
   end
 
   def attach
-    @disk = Disk.find(params[:id])
+    #@disk = Disk.find(params[:id])
     #TODO
   end
 
   def detach
-    @disk = Disk.find(params[:id])
+    #@disk = Disk.find(params[:id])
     #TODO
+  end
+
+  private
+  def check_me
+    @disk = Disk.find(params[:id])
+    redirect_to disks_path if @disk.user != current_user
   end
 end

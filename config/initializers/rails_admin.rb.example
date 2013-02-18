@@ -1,4 +1,4 @@
-# RailsAdmin config file. Generated on February 16, 2013 23:58
+# RailsAdmin config file. Generated on February 18, 2013 13:49
 # See github.com/sferik/rails_admin for more informations
 
 RailsAdmin.config do |config|
@@ -27,10 +27,10 @@ RailsAdmin.config do |config|
   # config.default_items_per_page = 20
 
   # Exclude specific models (keep the others):
-  # config.excluded_models = ['Admin', 'Disk', 'DiskSpec', 'Instance', 'InstanceSpec', 'Network', 'NetworkPool', 'NetworkSpec', 'Snapshot', 'Template', 'Usage', 'User']
+  # config.excluded_models = ['Admin', 'Disk', 'DiskSpec', 'Instance', 'InstanceSpec', 'Network', 'NetworkSpec', 'Snapshot', 'Template', 'Usage', 'User']
 
   # Include specific models (exclude the others):
-  # config.included_models = ['Admin', 'Disk', 'DiskSpec', 'Instance', 'InstanceSpec', 'Network', 'NetworkPool', 'NetworkSpec', 'Snapshot', 'Template', 'Usage', 'User']
+  # config.included_models = ['Admin', 'Disk', 'DiskSpec', 'Instance', 'InstanceSpec', 'Network', 'NetworkSpec', 'Snapshot', 'Template', 'Usage', 'User']
 
   # Label methods for model instances:
   # config.label_methods << :description # Default is [:name, :title]
@@ -122,6 +122,7 @@ RailsAdmin.config do |config|
 
   #   # Found associations:
 
+  #     configure :user, :belongs_to_association 
   #     configure :disk_spec, :belongs_to_association 
   #     configure :instance, :belongs_to_association 
   #     configure :snapshot, :belongs_to_association 
@@ -138,9 +139,11 @@ RailsAdmin.config do |config|
   #     configure :name, :string 
   #     configure :description, :text 
   #     configure :size, :integer 
+  #     configure :protected, :boolean 
   #     configure :attached, :boolean 
   #     configure :vdev, :text 
   #     configure :mode, :integer 
+  #     configure :user_id, :bson_object_id         # Hidden 
   #     configure :disk_spec_id, :bson_object_id         # Hidden 
   #     configure :instance_id, :bson_object_id         # Hidden 
   #     configure :snapshot_id, :bson_object_id         # Hidden 
@@ -246,6 +249,8 @@ RailsAdmin.config do |config|
   #     configure :ram, :integer 
   #     configure :cpu, :integer 
   #     configure :state, :integer 
+  #     configure :domid, :integer 
+  #     configure :vncport, :integer 
   #     configure :vncpassword, :text 
   #     configure :user_id, :bson_object_id         # Hidden 
   #     configure :instance_spec_id, :bson_object_id         # Hidden 
@@ -331,9 +336,9 @@ RailsAdmin.config do |config|
 
   #   # Found associations:
 
+  #     configure :user, :belongs_to_association 
   #     configure :network_spec, :belongs_to_association 
   #     configure :instance, :belongs_to_association 
-  #     configure :network_pool, :has_one_association 
 
   #   # Found columns:
 
@@ -345,53 +350,9 @@ RailsAdmin.config do |config|
   #     configure :description, :text 
   #     configure :ip, :text 
   #     configure :mac, :text 
+  #     configure :user_id, :bson_object_id         # Hidden 
   #     configure :network_spec_id, :bson_object_id         # Hidden 
   #     configure :instance_id, :bson_object_id         # Hidden 
-
-  #   # Cross-section configuration:
-
-  #     # object_label_method :name     # Name of the method called for pretty printing an *instance* of ModelName
-  #     # label 'My model'              # Name of ModelName (smartly defaults to ActiveRecord's I18n API)
-  #     # label_plural 'My models'      # Same, plural
-  #     # weight 0                      # Navigation priority. Bigger is higher.
-  #     # parent OtherModel             # Set parent model for navigation. MyModel will be nested below. OtherModel will be on first position of the dropdown
-  #     # navigation_label              # Sets dropdown entry's name in navigation. Only for parents!
-
-  #   # Section specific configuration:
-
-  #     list do
-  #       # filters [:id, :name]  # Array of field names which filters should be shown by default in the table header
-  #       # items_per_page 100    # Override default_items_per_page
-  #       # sort_by :id           # Sort column (default is primary key)
-  #       # sort_reverse true     # Sort direction (default is true for primary key, last created first)
-  #     end
-  #     show do; end
-  #     edit do; end
-  #     export do; end
-  #     # also see the create, update, modal and nested sections, which override edit in specific cases (resp. when creating, updating, modifying from another model in a popup modal or modifying from another model nested form)
-  #     # you can override a cross-section field configuration in any section with the same syntax `configure :field_name do ... end`
-  #     # using `field` instead of `configure` will exclude all other fields and force the ordering
-  # end
-
-
-  ###  NetworkPool  ###
-
-  # config.model 'NetworkPool' do
-
-  #   # You can copy this to a 'rails_admin do ... end' block inside your network_pool.rb model definition
-
-  #   # Found associations:
-
-  #     configure :network, :belongs_to_association 
-
-  #   # Found columns:
-
-  #     configure :_type, :text         # Hidden 
-  #     configure :_id, :bson_object_id 
-  #     configure :active, :boolean 
-  #     configure :ip, :text 
-  #     configure :port, :serialized 
-  #     configure :network_id, :bson_object_id         # Hidden 
 
   #   # Cross-section configuration:
 

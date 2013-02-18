@@ -35,20 +35,20 @@
               <script type="text/javascript">
                 $(document).ready(function() {
                     $('#disk-action').change(function() {
-                        var action = $(this).selected().val();
-                        var id = $('.disk-radio-btn:checked').val()
-                        if(id == null || id == undefined) {
-                          alert('Select disk');
-                        } else {
-                          $('#ajax-loading').show();
-                          $.post('/disks/'+id+'/'+action, function(json) {
-                            $('#ajax-loading').hide();
-                            alert(json.action + ":" + json.msg);
-                          })
-                        }
-                    })
-                });
-              </script>
+                      var action = $(this).selected().val();
+                      var id = $('.disk-radio-btn:checked').val()
+                      if(id == null || id == undefined) {
+                      alert('Select disk');
+                      } else {
+                      $('#ajax-loading').show();
+                      $.post('/disks/'+id+'/'+action, function(json) {
+                        $('#ajax-loading').hide();
+                        alert(json.action + ":" + json.msg);
+                        })
+                      }
+                      })
+                    });
+            </script>
             </div>
             <div class="tPages">
               <%= paginate @disks %>
@@ -73,8 +73,8 @@
             <td><%= disk.mode_to_string %></td>
             <td><%= disk.created_at %></td>
             <td class="tableActs">
-              <%= link_to '<span class="iconb" data-icon="&#xe271;"></span>'.html_safe, disk_path(disk), :class => "tablectrl_small bDefault tipS", :title => "Info" %>
-              <%= link_to '<span class="iconb" data-icon="&#xe1f7;"></span>'.html_safe, edit_disk_path(disk), :class => "tablectrl_small bDefault tipS", :title => "Settings" %>
+              <%= link_to '<span class="iconb" data-icon="&#xe271;"></span>'.html_safe, summary_disk_path(disk), :class => "tablectrl_small bDefault tipS info-dialog", :title => "Summary" %>
+              <%= link_to '<span class="iconb" data-icon="&#xe1f7;"></span>'.html_safe, edit_disk_path(disk), :class => "tablectrl_small bDefault tipS form-dialog", :title => "Settings" %>
               <%= link_to '<span class="iconb" data-icon="&#xe136;"></span>'.html_safe, disk_path(disk), :method => "delete",  :class => "tablectrl_small bDefault tipS", :title => "Destroy", :confirm => "Are you sure?" %>
             </td>
           </tr>

@@ -38,6 +38,7 @@ end
 # JAVASCRIPT
 gem 'jquery-rails', '~> 2.1.4'
 gem 'jquery-ui-rails'
+#gem 'pjax_rails'
 gem 'rack-pjax'
 
 # To use ActiveModel has_secure_password

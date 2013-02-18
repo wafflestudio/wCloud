@@ -10,11 +10,12 @@
 // WARNING: THE FIRST BLANK LINE MARKS THE END OF WHAT'S TO BE PROCESSED, ANY BLANK LINE SHOULD
 // GO AFTER THE REQUIRES BELOW.
 //
-//= require_self
+// require_self
 
 //= require jquery
-//= require jquery.ui.all
+//= require jquery-ui
 //= require jquery_ujs
+//= require jquery.pjax
 
 //= require Aquincum/plugins/charts/excanvas.min
 //= require Aquincum/plugins/charts/jquery.flot

@@ -1,5 +1,8 @@
 class InstancesController < ApplicationController
-  layout :false, :only => [:new, :edit]
+  layout :false, :only => [:new, :edit, :summary]
+
+  before_filter :check_user
+  before_filter :check_me, :except => [:index, :new, :create, :update_state]
 
   before_filter :update_state, :only => [:index]
 
@@ -48,20 +51,33 @@ class InstancesController < ApplicationController
   end
 
   def show
-    @instance = Instance.find(params[:id])
+    #@instance = Instance.find(params[:id])
+    @templates = [@instance.template]
+    @disks = @instance.disks
+    @networks = @instance.networks
+    @instance_specs = [@instance.instance_spec]
+  end
+
+  def summary
+    #@instance = Instance.find(params[:id])
+    @templates = [@instance.template]
+    @disks = @instance.disks
+    @networks = @instance.networks
+    @instance_specs = [@instance.instance_spec]
   end
 
   def edit
-    @instance = Instance.find(params[:id])
+    #@instance = Instance.find(params[:id])
+    @instance_specs = InstanceSpec.where(:active => true)
   end
 
   def update
-    @instance = Instance.find(params[:id])
+    #@instance = Instance.find(params[:id])
     @instance.update_attributes(params[:instance]) 
   end
 
   def destroy
-    @instance = Instance.find(params[:id])
+    #@instance = Instance.find(params[:id])
     if @instance.protected
     else
       destroy_vm(@instance)
@@ -105,7 +121,7 @@ class InstancesController < ApplicationController
   end
 
   def stop
-    @instance = Instance.find(params[:id])
+    #@instance = Instance.find(params[:id])
     if @instance.state == Instance::RUNNING && @instance.update_attribute(:state, Instance::STOPPING)
       if shutdown_vm(@instance)
         json = {:action => "stop", :status => true, :msg => ""}
@@ -116,9 +132,9 @@ class InstancesController < ApplicationController
     render :json => json
   end
   def start
-    @instance = Instance.find(params[:id])
+    #@instance = Instance.find(params[:id])
     if @instance.state == Instance::STOPPED && @instance.update_attribute(:state, Instance::STARTING)
-      if create_vm(@instance)
+      if generate_config(@instance) && create_vm(@instance)
         json = {:action => "start", :status => true, :msg => ""}
       else
         json = {:action => "start", :status => false, :msg => "Failed to start instance"}
@@ -127,9 +143,9 @@ class InstancesController < ApplicationController
     render :json => json
   end
   def reboot
-    @instance = Instance.find(params[:id])
+    #@instance = Instance.find(params[:id])
     if @instance.state == Instance::RUNNING && @instance.update_attribute(:state, Instance::REBOOTING)
-      if reboot_vm(@instance)
+      if generate_config(@instance) && update_config(@instance) && reboot_vm(@instance)
         json = {:action => "restart", :status => true, :msg => ""}
       else
         json = {:action => "restart", :status => false, :msg => "Failed to restart instance"}
@@ -138,7 +154,7 @@ class InstancesController < ApplicationController
     render :json => json
   end
   def forcestop
-    @instance = Instance.find(params[:id])
+    #@instance = Instance.find(params[:id])
     if @instance.state == Instance::RUNNING && @instance.update_attribute(:state, Instance::STOPPING)
       if destroy_vm(@instance)
         json = {:action => "forcestop", :status => true, :msg => ""}
@@ -149,9 +165,9 @@ class InstancesController < ApplicationController
     render :json => json
   end
   def forcereboot
-    @instance = Instance.find(params[:id])
+    #@instance = Instance.find(params[:id])
     if @instance.state == Instance::RUNNING && @instance.update_attribute(:state, Instance::REBOOTING)
-      if destroy_vm(@instance) && create_vm(@instance)
+      if destroy_vm(@instance) && generate_config(@instance) && create_vm(@instance)
         json = {:action => "forcereboot", :status => true, :msg => ""}
       else
         json = {:action => "forcereboot", :status => false, :msg => "Failed to forcereboot instance"}
@@ -160,21 +176,27 @@ class InstancesController < ApplicationController
     render :json => json
   end
   def snapshot
-    @instance = Instance.find(params[:id])
+    #@instance = Instance.find(params[:id])
     if @instance.state == Instance::RUNNING && @instance.state == Instance::STOPPED
       #TODO
     end
   end
   def restore
-    @instance = Instance.find(params[:id])
+    #@instance = Instance.find(params[:id])
     if @instance.state == Instance::RUNNING && @instance.state == Instance::STOPPED
       #TODO
     end
   end
   def duplicate
-    @instance = Instance.find(params[:id])
+    #@instance = Instance.find(params[:id])
     if @instance.state == Instance::RUNNING && @instance.state == Instance::STOPPED
       #TODO
     end
+  end
+
+  private
+  def check_me
+    @instance = Instance.find(params[:id])
+    redirect_to instances_path if @instance.user != current_user
   end
 end

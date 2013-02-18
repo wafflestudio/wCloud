@@ -784,26 +784,6 @@ $(function() {
 		$( "#spinner-time" ).timespinner( "value", current );
 	});
 	
-
-
-	//===== jQuery UI dialog =====//
-	
-	// Dialog
-    $('#customDialog').dialog({
-        autoOpen: false,
-        width: 650,
-        buttons: {
-            "Submit": function () {
-                $(this).children('form').submit();
-                $(this).dialog("close");
-            },
-            "Cancel": function () {
-                $(this).dialog("close");
-            }
-        }
-    });
-	
-	
 	//===== Vertical sliders =====//
 	
 	$( "#eq > span" ).each(function() {

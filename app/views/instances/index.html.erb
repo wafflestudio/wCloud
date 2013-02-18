@@ -71,13 +71,13 @@
                 <%= "#{instance.template.name}(#{instance.template.arch})" %>
               </a>
             </td>
-            <td><%= link_to instance.name, instance_path(instance), :title => instance.description, :class => "lightbox" %></td>
+            <td><%= link_to instance.name, instance_path(instance), :title => instance.description, :"pjax-dialog" => "" %></td>
             <td><%= instance.state_to_string %></td>
             <td><%= instance.networks.empty? ? "NULL" : instance.networks.first.ip %></td>
             <td><%= instance.created_at %></td>
             <td class="tableActs">
-              <%= link_to '<span class="iconb" data-icon="&#xe271;"></span>'.html_safe, instance_path(instance), :class => "tablectrl_small bDefault tipS", :title => "Info" %>
-              <%= link_to '<span class="iconb" data-icon="&#xe1f7;"></span>'.html_safe, edit_instance_path(instance), :class => "tablectrl_small bDefault tipS", :title => "Settings" %>
+              <%= link_to '<span class="iconb" data-icon="&#xe271;"></span>'.html_safe, summary_instance_path(instance), :class => "tablectrl_small bDefault tipS info-dialog", :title => "Summary" %>
+              <%= link_to '<span class="iconb" data-icon="&#xe1f7;"></span>'.html_safe, edit_instance_path(instance), :class => "tablectrl_small bDefault tipS form-dialog", :title => "Settings" %>
               <%= link_to '<span class="iconb" data-icon="&#xe136;"></span>'.html_safe, instance_path(instance), :method => "delete",  :class => "tablectrl_small bDefault tipS", :title => "Destroy", :confirm => "Are you sure?" %>
             </td>
           </tr>
