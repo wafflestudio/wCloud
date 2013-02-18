@@ -1,8 +1,8 @@
 class DisksController < ApplicationController
   layout :false, :only => [:new, :edit, :show, :summary]
 
-  before_filter :check_user
-  before_filter :check_me, :except => [:index, :new, :create]
+  before_filter :is_user?
+  before_filter :can_access?, :except => [:index, :new, :create]
 
   def index
     @disks = current_user.disks.page(params[:page]).per(10)
@@ -63,7 +63,7 @@ class DisksController < ApplicationController
   end
 
   private
-  def check_me
+  def can_access?
     @disk = Disk.find(params[:id])
     redirect_to disks_path if @disk.user != current_user
   end

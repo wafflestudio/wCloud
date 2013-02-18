@@ -1,5 +1,5 @@
 class MainController < ApplicationController
-  before_filter :check_user
+  before_filter :is_user?
 
   def home
   end

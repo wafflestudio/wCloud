@@ -1,8 +1,8 @@
 class InstancesController < ApplicationController
   layout :false, :only => [:new, :edit, :summary]
 
-  before_filter :check_user
-  before_filter :check_me, :except => [:index, :new, :create, :update_state]
+  before_filter :is_user?
+  before_filter :can_access?, :except => [:index, :new, :create, :update_state]
 
   before_filter :update_state, :only => [:index]
 
@@ -187,7 +187,7 @@ class InstancesController < ApplicationController
   end
 
   private
-  def check_me
+  def can_access?
     @instance = Instance.find(params[:id])
     redirect_to instances_path if @instance.user != current_user
   end

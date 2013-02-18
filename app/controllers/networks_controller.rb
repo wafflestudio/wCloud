@@ -1,8 +1,8 @@
 class NetworksController < ApplicationController
   layout :false, :only => [:edit, :summary]
 
-  before_filter :check_user
-  before_filter :check_me, :except => [:index]
+  before_filter :is_user?
+  before_filter :can_access?, :except => [:index]
 
   def index
     @networks = current_user.networks.page(params[:page]).per(10)
@@ -26,7 +26,7 @@ class NetworksController < ApplicationController
   end
 
   private
-  def check_me
+  def can_access?
     @network = Network.find(params[:id])
     redirect_to networks_path if @network.user != current_user
   end

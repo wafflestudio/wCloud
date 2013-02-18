@@ -1,8 +1,8 @@
 class TemplatesController < ApplicationController
   layout :false, :only => [:new, :edit, :summary]
 
-  before_filter :check_user
-  before_filter :check_me, :except => [:index, :new, :create]
+  before_filter :is_user?
+  before_filter :can_access?, :except => [:index, :new, :create]
 
   def index
     #@templates = current_user.templates
@@ -42,7 +42,7 @@ class TemplatesController < ApplicationController
   end
 
   private
-  def check_me
+  def can_access?
     @template = Template.find(params[:id])
     redirect_to templates_path if !@template.user.nil? && @template.user != current_user
   end
