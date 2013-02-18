@@ -5,7 +5,7 @@ class NetworksController < ApplicationController
   before_filter :check_me, :except => [:index]
 
   def index
-    @networks = current_user.networks.page(params[:page]).per(11)
+    @networks = current_user.networks.page(params[:page]).per(10)
   end
 
   def show

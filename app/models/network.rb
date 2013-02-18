@@ -15,6 +15,8 @@ class Network
   belongs_to :network_spec
   belongs_to :instance
 
+  has_many :logs, :class_name => "Log", :as => "logable", :dependent => :destroy
+
   ## Validation
   validates :user, :presence => true
   validates :network_spec, :presence => true

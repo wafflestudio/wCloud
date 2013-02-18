@@ -5,8 +5,7 @@ class TemplatesController < ApplicationController
   before_filter :check_me, :except => [:index, :new, :create]
 
   def index
-    #@templates = current_user.templates
-    @templates = Template.all
+    @templates = current_user.templates
   end
 
   def new

@@ -27,6 +27,7 @@ class Disk
   belongs_to :snapshot
   belongs_to :parent, :class_name => "Disk", :inverse_of => :children
   has_many :children, :class_name => "Disk", :inverse_of => :parent
+  has_many :logs, :class_name => "Log", :as => "logable", :dependent => :destroy
 
   ## Validation
   validates :user, :presence => true

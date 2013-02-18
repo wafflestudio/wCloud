@@ -1,4 +1,4 @@
-class Usage
+class Log
   include Mongoid::Document
   include Mongoid::Timestamps
 
@@ -8,7 +8,9 @@ class Usage
 
   ## Relation
   belongs_to :user
+  belongs_to :logable, :polymorphic => true
 
   ## Validation
   validates :user, :presence => true
+  validates :logable, :presence => true
 end

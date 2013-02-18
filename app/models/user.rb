@@ -53,12 +53,12 @@ class User
   has_many :snapshots, :dependent => :destroy
   has_many :networks, :dependent => :destroy
   has_many :templates, :dependent => :destroy
-  has_many :usages, :dependent => :destroy
+  has_many :logs, :class_name => "Log", :as => "logable", :dependent => :destroy
 
   def name
     self.email.split("@").first
   end
-  def unread_usages
-    self.usages.where(:read => false)
+  def unread_logs
+    self.logs.where(:read => false)
   end
 end

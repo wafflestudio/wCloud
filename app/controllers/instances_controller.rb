@@ -7,7 +7,7 @@ class InstancesController < ApplicationController
   before_filter :update_state, :only => [:index]
 
   def index
-    @instances = current_user.instances.page(params[:page]).per(3)
+    @instances = current_user.instances.page(params[:page]).per(10)
   end
 
   def new

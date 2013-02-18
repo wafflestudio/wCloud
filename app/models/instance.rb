@@ -34,6 +34,7 @@ class Instance
   has_many :snapshots, :dependent => :destroy
   has_many :networks, :dependent => :destroy
   has_many :templates
+  has_many :logs, :class_name => "Log", :as => "logable", :dependent => :destroy
 
   ## Validation
   validates :user, :presence => true

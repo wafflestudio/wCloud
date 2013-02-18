@@ -32,4 +32,5 @@ class Template
   belongs_to :instance
 
   has_many :instances, :dependent => :destroy
+  has_many :logs, :class_name => "Log", :as => "logable", :dependent => :destroy
 end

@@ -18,13 +18,12 @@ WCloud::Application.routes.draw do
     post "/snapshot" => "instances#snapshot", :on => :member
     post "/restore" => "instances#restore", :on => :member
     post "/duplicate" => "instances#duplicate", :on => :member
-    get "/update_state" => "instances#update_state", :on => :collection
+    post "/update_state" => "instances#update_state", :on => :collection
   end
 
   ## DISK
   post "/disks/new" => "disks#new", :as => "new_disk"
   resources :disks, :except => [:new, :edit] do
-    post "/new" => "disks#new", :on => :collection, :as => "new_disk"
     post "/edit" => "disks#edit", :on => :member
     post "/summary" => "disks#summary", :on => :member
 
@@ -50,7 +49,7 @@ WCloud::Application.routes.draw do
   end
 
   ## USAGE
-  resources :usages, :only => [:index] do
+  resources :logs, :only => [:index] do
   end
 
   root :to => "main#home"

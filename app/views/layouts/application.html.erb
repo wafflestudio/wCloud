@@ -85,7 +85,7 @@
               <li><%= link_to (image_tag("/assets/Aquincum/icons/middlenav/add.png")), new_instance_path, :class => "tipN form-dialog", :title => "Create Intance" %></li>
               <li><%= link_to (image_tag("/assets/Aquincum/icons/middlenav/add.png")), new_disk_path, :class => "tipN form-dialog", :title => "Create Disk" %></li>
               <li><%= link_to_function (image_tag("/assets/Aquincum/icons/middlenav/upload.png")), "alert('not yet')", :class => "tipN", :title => "Upload Files" %></li>
-              <li><%= link_to_function (image_tag("/assets/Aquincum/icons/middlenav/dialogs.png")), "alert('not yet')", :class => "tipN", :title => "Messages" %><strong><%= current_user.unread_usages.count %></strong></li>
+              <li><%= link_to_function (image_tag("/assets/Aquincum/icons/middlenav/dialogs.png")), "alert('not yet')", :class => "tipN", :title => "Messages" %><strong><%= current_user.unread_logs.count %></strong></li>
               <li><%= link_to (image_tag("/assets/Aquincum/icons/middlenav/stats.png")), instances_path, :class => "tipN", :title => "Check Statistics" %></li>
             </ul>
             <%= yield %>

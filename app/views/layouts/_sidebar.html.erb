@@ -3,7 +3,7 @@
   <div class="user">
     <a title="" class="leftUserDrop">
       <img src="/assets/Aquincum/user.png" alt="" />
-      <span><strong><%= current_user.unread_usages.count %></strong></span>
+      <span><strong><%= current_user.unread_logs.count %></strong></span>
     </a>
     <span><%= current_user.name %></span>
     <ul class="leftUser">
@@ -56,7 +56,7 @@
     </a>
     </li>
     <li>
-    <a href="<%= usages_path %>" title="" class="<%= "active" if params[:controller] == "usages" %>">
+    <a href="<%= logs_path %>" title="" class="<%= "active" if params[:controller] == "logs" %>">
       <img src="/assets/Aquincum/icons/mainnav/messages.png" alt="" />
       <span>Messages</span>
     </a>
