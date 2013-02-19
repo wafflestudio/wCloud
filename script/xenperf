@@ -1,0 +1,35 @@
+#!/bin/sh
+
+XENTOP=/usr/sbin/xentop
+PERF_LOG_FILE=/tmp/perf.log
+LOG_ROOT=/var/cloud/instances
+
+echo $$ > /var/run/xenperf.pid
+
+while [ 1 ]; do
+	$XENTOP -f -b -i 1 > $PERF_LOG_FILE
+
+	N=`wc -l $PERF_LOG_FILE | awk '{print $1}'`
+
+	INSTANCES=`tail $PERF_LOG_FILE -n $(expr $N - 1)`
+	LINES=(`echo $INSTANCES | sed -e 's/ /,/g'`)
+	TIME=`date +%Y-%m-%d-%k-%M-%S`
+
+	while read LINE; do
+			if [ "${LINE:0:4}" = "NAME" -o "${LINE:0:8}" = "Domain-0" ]; then
+					continue
+			fi
+
+			NAME=`echo $LINE | awk '{print $1}'`
+			CPU_IDLE=`echo $LINE | awk '{print $4}'`
+			NETWORK_INPUT=`echo $LINE | awk '{print $11}'`
+			NETWORK_OUTPUT=`echo $LINE | awk '{print $12}'`
+			DISK_READ=`echo $LINE | awk '{print $17}'`
+			DISK_WRITE=`echo $LINE | awk '{print $18}'`
+
+			LOG_PATH=$LOG_ROOT/$NAME/$NAME.log
+
+			echo $TIME,$NAME,$CPU_IDLE,$NETWORK_INPUT,$NETWORK_OUTPUT,$DISK_READ,$DISK_WRITE >> $LOG_PATH
+	done < $PERF_LOG_FILE
+	sleep 10
+done
