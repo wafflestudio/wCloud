@@ -65,6 +65,6 @@ class DisksController < ApplicationController
   private
   def can_access?
     @disk = Disk.find(params[:id])
-    redirect_to disks_path if @disk.user != current_user
+    redirect_to disks_path if @disk.nil? || @disk.user != current_user
   end
 end

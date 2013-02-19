@@ -44,6 +44,6 @@ class TemplatesController < ApplicationController
   private
   def can_access?
     @template = Template.find(params[:id])
-    redirect_to templates_path if !@template.user.nil? && @template.user != current_user
+    redirect_to templates_path if @template.nil? || @template.user != current_user
   end
 end

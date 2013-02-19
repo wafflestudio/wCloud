@@ -34,6 +34,10 @@ class Template
   has_many :instances, :dependent => :destroy
   has_many :logs, :class_name => "Log", :as => "logable", :dependent => :destroy
 
+  ## Validation
+  attr_accessible :path, :type, :arch, :instance
+  attr_readonly :user, :disk_spec
+
   def can_destroy?
     if !self.protected && self.instances.empty? && !self.user.nil?
       true

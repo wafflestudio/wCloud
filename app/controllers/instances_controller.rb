@@ -189,6 +189,6 @@ class InstancesController < ApplicationController
   private
   def can_access?
     @instance = Instance.find(params[:id])
-    redirect_to instances_path if @instance.user != current_user
+    redirect_to instances_path if @instance.nil? || @instance.user != current_user
   end
 end

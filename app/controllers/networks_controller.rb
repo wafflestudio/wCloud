@@ -28,6 +28,6 @@ class NetworksController < ApplicationController
   private
   def can_access?
     @network = Network.find(params[:id])
-    redirect_to networks_path if @network.user != current_user
+    redirect_to networks_path if @network.nil? || @network.user != current_user
   end
 end

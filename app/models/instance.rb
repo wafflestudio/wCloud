@@ -17,8 +17,6 @@ class Instance
   field :protected, type: Boolean, :default => true
   field :name, type: String, :default => ""
   field :description, type: String, :default => ""
-  field :ram, type: Integer, :default => 512
-  field :cpu, type: Integer, :default => 1
   field :state, type: Integer, :default => CREATING
   field :domid, type: Integer, :default => 0
 
@@ -37,6 +35,9 @@ class Instance
   has_many :logs, :class_name => "Log", :as => "logable", :dependent => :destroy
 
   ## Validation
+  attr_accessible :state, :domid, :disks, :snapshots, :networks, :templates, :logs
+  attr_readonly :user, :template
+
   validates :user, :presence => true
   validates :instance_spec, :presence => true
   validates :template, :presence => true
