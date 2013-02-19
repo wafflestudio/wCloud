@@ -34,10 +34,11 @@ class Instance
   has_many :templates
   has_many :logs, :class_name => "Log", :as => "logable", :dependent => :destroy
 
-  ## Validation
+  ## Security
   attr_accessible :state, :domid, :disks, :snapshots, :networks, :templates, :logs
   attr_readonly :user, :template
 
+  ## Validation
   validates :user, :presence => true
   validates :instance_spec, :presence => true
   validates :template, :presence => true

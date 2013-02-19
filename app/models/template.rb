@@ -34,7 +34,7 @@ class Template
   has_many :instances, :dependent => :destroy
   has_many :logs, :class_name => "Log", :as => "logable", :dependent => :destroy
 
-  ## Validation
+  ## Security
   attr_accessible :path, :type, :arch, :instance
   attr_readonly :user, :disk_spec
 

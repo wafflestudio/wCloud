@@ -17,10 +17,11 @@ class Network
 
   has_many :logs, :class_name => "Log", :as => "logable", :dependent => :destroy
 
-  ## Validation
+  ## Security
   attr_accessible :instance, :logs
   attr_readonly :mac, :user, :network_spec
 
+  ## Validation
   validates :user, :presence => true
   validates :network_spec, :presence => true
 
