@@ -52,6 +52,13 @@ WCloud::Application.routes.draw do
   resources :logs, :only => [:index] do
   end
 
+  ## SPECS
+  scope "specs" do
+    post "/:id/instance" => "specs#instance", :as => "instance_spec"
+    post "/:id/disk" => "specs#disk", :as => "disk_spec"
+    post "/:id/network" => "specs#network", :as => "network_spec"
+  end
+
   root :to => "main#home"
   match "/about" => "main#about"
   match "/developers" => "main#devlopers"

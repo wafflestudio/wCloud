@@ -1,0 +1,9 @@
+<% if @spec.is_a?(InstanceSpec) %>
+  <%= @spec.name %>
+<% elsif @spec.is_a?(DiskSpec) %>
+  <%= @spec.name %>
+<% elsif @spec.is_a?(NetworkSpec) %>
+  <%= @spec.name %>
+<% else %>
+  Empty
+<% end %>
