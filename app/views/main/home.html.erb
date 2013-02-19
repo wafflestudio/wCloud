@@ -1,3 +1,41 @@
+<% render "default" %>
+
+<script type="text/javascript">
+$(document).ready(function() {
+  var xVal = 0; 
+  var inputdata = [[], []]; 
+  var options = { xaxes: [{}], 
+    yaxes: [{}, { show: 
+      true, position: "right"}] 
+  }
+  var plot = $.plot($(".chart"), [{ data: inputdata[0], label: "Network Input" }, { data: inputdata[1], label: "Network Output", yaxis: 2}], options); 
+
+  function getData() { 
+    // This could be an ajax call back. 
+    var yVal1 = Math.floor(Math.random() * 100); 
+    var yVal2 = Math.floor(Math.random() * 11); 
+    var datum1 = [xVal, yVal1]; 
+    var datum2 = [xVal, yVal2]; 
+    inputdata[0].push(datum1);
+    inputdata[1].push(datum2);
+
+    if (inputdata[0].length > 10) { 
+      inputdata[0] = inputdata[0].splice(1);
+      inputdata[1] = inputdata[1].splice(1);
+    }
+    xVal++;
+
+    plot.setData([{ data: inputdata[0], label: "Network Input" }, 
+        { data: inputdata[1], label: "Network Output", yaxis: 2}
+        ] 
+        );
+    plot.setupGrid();
+    plot.draw();
+  }
+  setInterval(getData, 10000);
+});
+</script>
+
 <!-- Chart -->
 <div class="widget chartWrapper">
   <div class="whead"><h6>Statistics(not yet)</h6>
@@ -10,7 +48,10 @@
       </ul>
     </div>
   </div>
-  <div class="body"><div class="chart"></div></div>
+  <div class="body">
+    <div class="chart">
+    </div>
+  </div>
 </div>
 
 <!-- 6 + 6 -->

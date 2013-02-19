@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
     <meta name="keywords" content="WaffleStudio, 와플스튜디오, 웹개발, Web Development, snuev, 서울대학교" />
     <meta name="description" content="맛있는 웹을 만드는 동아리, 와플스튜디오입니다." />
     <meta name="author" content="Wafflestudio" />
@@ -22,7 +22,7 @@
 
     <%= javascript_include_tag "application" %>
     <script type="text/javascript">
-      $(document).pjax('a', '[data-pjax-container]')
+      $(document).pjax('a', '#pjax-container')
     </script>
   </head>
   <body>
@@ -34,28 +34,26 @@
         <!-- Right top nav -->
         <div class="topNav">
           <ul class="userNav">
-            <li><%= link_to "", about_path, :class => "search", :title => "About" %>
+            <li><%= link_to "", about_path, :class => "search", :title => "About" %></li>
             <% if user_signed_in? %>
               <li><a href="#" title="Settings" class="settings"></a></li>
               <li><%= link_to "", destroy_user_session_path, :method => :delete, :class => "logout", :title => "Signout" %></li>
             <% end %>
           </ul>
+          <a title="" class="iButton"></a>
         </div>
       </div>
 
       <% if user_signed_in? %>
         <!-- Responsive nav -->
         <ul class="altMenu">
-          <li><a href="index.html" title="">Dashboard</a></li>
-          <li><a href="ui.html" title="" class="exp" id="current">UI elements</a>
-          <ul>
-            <li><a href="ui.html">General elements</a></li>
-            <li><a href="ui_icons.html">Icons</a></li>
-            <li><a href="ui_buttons.html">Button sets</a></li>
-            <li><a href="ui_grid.html" class="active">Grid</a></li>
-            <li><a href="ui_custom.html">Custom elements</a></li>
-          </ul>
-          </li>
+          <li><%= link_to "Dashboard", root_path, :title => "Dashboard" %></li>
+          <li><%= link_to "Instance", instances_path, :title => "Instance" %></li>
+          <li><%= link_to "Template", templates_path, :title => "Template" %></li>
+          <li><%= link_to "Disk", disks_path, :title => "Disk" %></li>
+          <li><%= link_to "Network", networks_path, :title => "Network" %></li>
+          <li><%= link_to "Message", logs_path, :title => "Message" %></li>
+          <li><%= link_to "Statistic", "#", :title => "Statistic" %></li>
         </ul>
       <% end %>
     </div>
@@ -73,7 +71,7 @@
       <!-- Sidebar ends -->
       <!-- Content begins -->
       <div id="content">
-        <div data-pjax-container>
+        <div id="pjax-container">
           <!-- Content Top -->
           <%= yield :contentTop %>
           <!-- Breadcrumbs line -->
@@ -86,17 +84,19 @@
               <li><%= link_to (image_tag("/assets/Aquincum/icons/middlenav/add.png")), new_disk_path, :class => "tipN form-dialog", :title => "Create Disk" %></li>
               <li><%= link_to_function (image_tag("/assets/Aquincum/icons/middlenav/upload.png")), "alert('not yet')", :class => "tipN", :title => "Upload Files" %></li>
               <li><%= link_to_function (image_tag("/assets/Aquincum/icons/middlenav/dialogs.png")), "alert('not yet')", :class => "tipN", :title => "Messages" %><strong><%= current_user.unread_logs.count %></strong></li>
-              <li><%= link_to (image_tag("/assets/Aquincum/icons/middlenav/stats.png")), instances_path, :class => "tipN", :title => "Check Statistics" %></li>
+              <li><%= link_to (image_tag("/assets/Aquincum/icons/middlenav/stats.png")), instances_path, :class => "tipN", :title => "Check Statistic" %></li>
             </ul>
             <%= yield %>
           </div>
           <script type="text/javascript">
             $(document).ready(function() {
               // jquery.uniform
-              $('select, input, a.button, button').uniform();
+              $(".styled, input:radio, input:checkbox, .dataTables_length select").uniform();
+              $('.tipS').tipsy({gravity: 's',fade: true, html:true});
               // jquery-ui dialog
               $('.form-dialog').click(function(e) {
                 var title = $(this).attr("original-title");
+                console.log(title);
                 $('#ajax-loading').show();
                 $.post($(this).attr("href"), function(html) {
                   $('#form-dialog').html(html);
@@ -111,6 +111,7 @@
               });
               $('.info-dialog').click(function(e) {
                 var title = $(this).attr("original-title");
+                console.log(title);
                 $('#ajax-loading').show();
                 $.post($(this).attr("href"), function(html) {
                   $('#info-dialog').html(html);
@@ -126,6 +127,7 @@
             $(document).ready(function() {
                 $('#form-dialog').dialog({
                     autoOpen: false,
+                    resizable: false,
                     width: 650,
                     buttons: {
                         "Submit": function () {
@@ -134,16 +136,19 @@
                         "Cancel": function () {
                             $(this).dialog("close");
                         }
-                    }
+                    },
+                    resizable: false
                 });
                 $('#info-dialog').dialog({
                     autoOpen: false,
+                    resizable: false,
                     width: 650,
                     buttons: {
                         "Ok": function () {
                             $(this).dialog("close");
                         }
-                    }
+                    },
+                    resizable: false
                 });
                 $('ul.nav a').click(function() {
                     $('ul.nav a[class=active]').toggleClass('active');
@@ -156,12 +161,12 @@
       </div>
       <!-- Content ends -->
     <% else # signin, signup, reset password %>
-      <div data-pjax-container>
+      <div id="pjax-container">
         <%= yield %>
       </div>
     <% end %>
     <div id="ajax-loading" style="display: none; position: absolute; top:0; left: 0; width: 100%; height: 100%;">
-      <img src="/assets/Aquincum/elements/loaders/4.gif" style="position: relative; top: 50%; left: 50%;">
+      <img src="/assets/Aquincum/elements/loaders/4.gif" style="position: relative; top: 50%; left: 50%;" alt="ajax-loading">
     </div>
     <div id="form-dialog" title="Unknown"></div>
     <div id="info-dialog" title="Unknown"></div>

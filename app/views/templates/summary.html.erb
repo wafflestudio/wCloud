@@ -3,13 +3,13 @@
     <div class="whead">
       <h6><%= label_tag "Instance" %></h6>
     </div>
-    <table cellpadding="0" cellspacing="0" width="100%" class="tDefault checkAll tMedia">
+    <table style="width: 100%" class="tDefault checkAll tMedia">
       <thead>
         <tr>
-          <td width="180">OS</td>
+          <td style="width: 180px">OS</td>
           <td>Name</td>
-          <td width="70">State</td>
-          <td width="150">Created At</td>
+          <td style="width: 70px">State</td>
+          <td style="width: 150px">Created At</td>
         </tr>
       </thead>
       <tfoot></tfoot>
@@ -21,7 +21,7 @@
               <%= "#{@template.instance.template.name}(#{@template.instance.template.arch})" %>
             </a>
           </td>
-          <td><%= link_to @template.instance.name, instance_path(@template.instance), :title => @template.instance.description, :"pjax-dialog" => "" %></td>
+          <td><%= link_to @template.instance.name, instance_path(@template.instance), :title => @template.instance.description %></td>
           <td><%= @template.instance.state_to_string %></td>
           <td><%= @template.instance.created_at %></td>
         </tr>
