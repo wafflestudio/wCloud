@@ -22,7 +22,7 @@
 
     <%= javascript_include_tag "application" %>
     <script type="text/javascript">
-      $(document).pjax('a:not(:pjax-disable)', '#pjax-container')
+      $(document).pjax('a:not([pjax-disable])', '#pjax-container')
     </script>
   </head>
   <body>

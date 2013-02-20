@@ -21,6 +21,7 @@
         chartType = type;
         // This could be an ajax call back. 
         $.post('/instances/<%= @instance._id %>/performance', function(json) {
+          console.log(json);
           inputdata = [[], []];
           for(i = 0; i < json.length; i++) {
           if(chartType == 0) {
