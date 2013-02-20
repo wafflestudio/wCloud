@@ -62,13 +62,13 @@
             <td><input type="radio" name="checkRow" id="disk-<%= disk._id %>" class="disk-radio-btn" value="<%= disk._id %>" /></td>
             <td>
               <% unless disk.instance.nil? %>
-                <a href="<%= instance_path(disk.instance) %>" title="<%= disk.instance.description %>" class="lightbox">
+                <a href="<%= instance_path(disk.instance) %>" title="<%= disk.instance.description %>">
                   <%= image_tag disk.instance.template.logo.url(:thumb), :style => "vertical-align: middle;" %>
                   <%= "#{disk.instance.name}" %>
                 </a>
               <% end %>
             </td>
-            <td><%= link_to disk.name, disk_path(disk), :title => disk.description, :class => "lightbox" %></td>
+            <td><%= link_to disk.name, disk_path(disk), :title => disk.description %></td>
             <td><%= disk.mode_to_string %></td>
             <td class="fileInfo"><span><strong>Spec:</strong> <%= disk.disk_spec.name %></span><span><strong>Size:</strong> <%= disk.size / 1024 %>GB</span></td>
             <td><%= disk.created_at %></td>

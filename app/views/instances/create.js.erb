@@ -1,3 +1,5 @@
 <% if !flash[:return][:status] %>
   alert('<%= flash[:return][:msg] %>');
+<% else %>
+  alert('Create Instance, check Instances tab & read /tutorial.pdf');
 <% end %>

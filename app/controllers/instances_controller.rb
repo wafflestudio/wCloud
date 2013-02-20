@@ -81,6 +81,7 @@ class InstancesController < ApplicationController
 
   def update_state
     json = []
+
     Instance.all.each do |instance|
       case instance.state
       when Instance::CREATING
@@ -109,7 +110,20 @@ class InstancesController < ApplicationController
       end
       json << {:id => instance._id, :name => instance.name, :state => instance.state_to_string}
     end
+
     #render :json => json
+  end
+
+  def performance
+    #@instance = Instance.find(params[:id])
+    json = []
+    lines = get_perf(@instance, 100) 
+    lines.each do |line|
+      elements = line.split(",")
+      json << {:date => elements[0], :id => elements[1], :cpu => elements[2], :input => elements[3], :output => elements[4], :read => elements[5], :write => elements[6]}
+    end
+
+    render :json => json
   end
 
   def stop

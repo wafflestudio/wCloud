@@ -19,7 +19,7 @@
         <% @templates.each do |template| %>
           <tr>
             <td>
-              <a href="<%= template_path(template) %>" title="<%= template.description %>" class="lightbox">
+              <a href="<%= template_path(template) %>" title="<%= template.description %>">
                 <%= image_tag template.logo.url(:thumb), :style => "margin-top: 7px;" %>
               </a>
             </td>

@@ -62,13 +62,13 @@
             <td><input type="radio" name="checkRow" id="network-<%= network._id %>" class="network-radio-btn" value="<%= network._id %>" /></td>
             <td>
               <% unless network.instance.nil? %>
-                <a href="<%= instance_path(network.instance) %>" title="<%= network.instance.description %>" class="lightbox">
+                <a href="<%= instance_path(network.instance) %>" title="<%= network.instance.description %>">
                   <%= image_tag network.instance.template.logo.url(:thumb), :style => "vertical-align: middle;" %>
                   <%= "#{network.instance.name}" %>
                 </a>
               <% end %>
             </td>
-            <td><%= link_to network.name, network_path(network), :title => network.description, :class => "lightbox" %></td>
+            <td><%= link_to network.name, network_path(network), :title => network.description %></td>
             <td><%= network.ip %></td>
             <td><%= network.mac %></td>
             <td class="fileInfo"><span><strong>Spec:</strong> <%= network.network_spec.name %></span><span><strong>Type:</strong> <%= network.network_spec.type_to_string %></span></td>

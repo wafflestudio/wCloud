@@ -1,13 +1,78 @@
 <% render "default" %>
 
+<% unless @disk.instance.nil? %>
+<script type="text/javascript">
+  var chartType = 2; // 0: network IO, 1: CPU, RAM, 2: DISK IO
+  var inputdata = [[], []]; 
+  var result = [0, 0];
+  var before = [0, 0];
+  var label = [["Network Input", "Network Output"], ["CPU", "RAM"], ["Disk Read", "Disk Write"]];
+  var options = {
+    xaxes: [{}], 
+    yaxes: [{}, {
+      show: 
+      true, position: "right"
+    }] 
+  }
+  $(document).ready(function() {
+    var plot = $.plot($(".chart"), [{data: inputdata[0], label: label[chartType][0]}, {data: inputdata[1], label: label[chartType][1], yaxis: 2}], options); 
+
+    function getData(type) { 
+      chartType = type;
+      // This could be an ajax call back. 
+      $.post('/instances/<%= @disk.instance._id %>/performance', function(json) {
+        inputdata = [[], []];
+        for(i = 0; i < json.length; i++) {
+        if(chartType == 0) {
+          result[0] = (json[i].input - before[0]) / 10
+          result[1] = (json[i].output - before[1]) / 10
+          before[0] = json[i].input;
+          before[1] = json[i].output;
+        } else if(chartType == 1) {
+          result[0] = json[i].cpu;
+          result[1] = 0;
+        } else { // else if(chartType == 2) {
+          result[0] = (json[i].read - before[0]) / 2048
+          result[1] = (json[i].write - before[1]) / 2048
+          before[0] = json[i].read;
+          before[1] = json[i].write;
+        }
+
+        inputdata[0].push([i, result[0]])
+        inputdata[1].push([i, result[1]])
+        }
+        inputdata[0] = inputdata[0].slice(1);
+        inputdata[1] = inputdata[1].slice(1);
+        plot.setData([{ data: inputdata[0], label: label[chartType][0] }, 
+            { data: inputdata[1], label: label[chartType][1], yaxis: 2}
+            ] 
+        );
+        plot.setupGrid();
+        plot.draw();
+      });
+    }
+
+    getData(chartType);
+    setInterval(getData(chartType), 10000);
+  });
+</script>
+
+<!-- Chart -->
+<div class="widget chartWrapper">
+  <div class="whead"><h6>Statistics[ Name: <%= @disk.name %> ]</h6>
+  </div>
+  <div class="body">
+    <div class="chart">
+    </div>
+  </div>
+</div>
+<% end %>
+
 <div class="fluid">
   <!-- Media table -->
   <div class="widget check grid12">
     <div class="whead">
       <h6>Instances</h6>
-      <div class="titleOpt">
-        <a href="<%= instances_path %>"><span class="icos-refresh2"></span></a>
-      </div>
     </div>
     <table style="width: 100%" class="tDefault checkAll tMedia">
       <thead>
@@ -55,14 +120,11 @@
                 });
               </script>
             </div>
-            <div class="tPages">
-              <%= paginate @instances %>
-            </div>
           </td>
         </tr>
       </tfoot>
       <tbody>
-        <% @instances.each do |instance| %>
+        <% [@disk.instance].each do |instance| %>
           <tr>
             <td><input type="radio" name="checkRow" id="instance-<%= instance._id %>" class="instance-radio-btn" value="<%= instance._id %>" /></td>
             <td>

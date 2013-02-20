@@ -1,58 +1,85 @@
 <% render "default" %>
 
-<script type="text/javascript">
-  $(document).ready(function() {
-    var xVal = 0; 
+<% unless @instance.nil? %>
+  <script type="text/javascript">
+    var chartType = 0; // 0: network IO, 1: CPU, RAM, 2: DISK IO
     var inputdata = [[], []]; 
-    var options = { xaxes: [{}], 
-      yaxes: [{}, { show: 
-        true, position: "right"}] 
+    var result = [0, 0];
+    var before = [0, 0];
+    var label = [["Network Input", "Network Output"], ["CPU", "RAM"], ["Disk Read", "Disk Write"]];
+    var options = {
+      xaxes: [{}], 
+      yaxes: [{}, {
+        show: 
+        true, position: "right"
+      }] 
     }
-    var plot = $.plot($(".chart"), [{ data: inputdata[0], label: "Network Input" }, { data: inputdata[1], label: "Network Output", yaxis: 2}], options); 
+    $(document).ready(function() {
+      var plot = $.plot($(".chart"), [{data: inputdata[0], label: label[chartType][0]}, {data: inputdata[1], label: label[chartType][1], yaxis: 2}], options); 
 
-    function getData() { 
-      // This could be an ajax call back. 
-      var yVal1 = Math.floor(Math.random() * 100); 
-      var yVal2 = Math.floor(Math.random() * 11); 
-      var datum1 = [xVal, yVal1]; 
-      var datum2 = [xVal, yVal2]; 
-      inputdata[0].push(datum1);
-      inputdata[1].push(datum2);
+      function getData(type) { 
+        chartType = type;
+        // This could be an ajax call back. 
+        $.post('/instances/<%= @instance._id %>/performance', function(json) {
+          inputdata = [[], []];
+          for(i = 0; i < json.length; i++) {
+          if(chartType == 0) {
+            result[0] = (json[i].input - before[0]) / 10
+            result[1] = (json[i].output - before[1]) / 10
+            before[0] = json[i].input;
+            before[1] = json[i].output;
+          } else if(chartType == 1) {
+            result[0] = json[i].cpu;
+            result[1] = 0;
+          } else { // else if(chartType == 2) {
+            result[0] = (json[i].read - before[0]) / 2048
+            result[1] = (json[i].write - before[1]) / 2048
+            before[0] = json[i].read;
+            before[1] = json[i].write;
+          }
 
-      if (inputdata[0].length > 10) { 
-        inputdata[0] = inputdata[0].splice(1);
-        inputdata[1] = inputdata[1].splice(1);
-      }
-      xVal++;
-
-      plot.setData([{ data: inputdata[0], label: "Network Input" }, 
-          { data: inputdata[1], label: "Network Output", yaxis: 2}
-          ] 
+          inputdata[0].push([i, result[0]])
+          inputdata[1].push([i, result[1]])
+          }
+          inputdata[0] = inputdata[0].slice(1);
+          inputdata[1] = inputdata[1].slice(1);
+          plot.setData([{ data: inputdata[0], label: label[chartType][0] }, 
+              { data: inputdata[1], label: label[chartType][1], yaxis: 2}
+              ] 
           );
-      plot.setupGrid();
-      plot.draw();
-    }
-    setInterval(getData, 10000);
-  });
-</script>
+          plot.setupGrid();
+          plot.draw();
+        });
+      }
 
-<!-- Chart -->
-<div class="widget chartWrapper">
-  <div class="whead"><h6>Statistics(not yet)</h6>
-    <div class="titleOpt">
-      <a href="#" data-toggle="dropdown"><span class="icos-cog3"></span></a>
-      <ul class="dropdown-menu pull-right">
-        <li><a href="#"><span class="icon-broadcast-2"></span>Network</a></li>
-        <li><a href="#"><span class="icon-database"></span>Disk</a></li>
-        <li><a href="#"><span class="icon-calculate"></span>CPU</a></li>
-      </ul>
+      getData(chartType);
+      setInterval(getData(chartType), 10000);
+
+      $('.chartType').click(function() {
+          getData($(this).attr('type')); 
+          return false;
+      });
+    });
+  </script>
+
+  <!-- Chart -->
+  <div class="widget chartWrapper">
+    <div class="whead"><h6>Statistics[ <%= @instance.name %> ]</h6>
+      <div class="titleOpt">
+        <a href="#" data-toggle="dropdown"><span class="icos-cog3"></span></a>
+        <ul class="dropdown-menu pull-right">
+          <li><a href="#network" class="chartType" type="0"><span class="icon-broadcast-2"></span>Network</a></li>
+          <li><a href="#cpu" class="chartType" type="1"><span class="icon-calculate"></span>CPU/RAM</a></li>
+          <li><a href="#disk" class="chartType" type="2"><span class="icon-database"></span>Disk IO</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="body">
+      <div class="chart">
+      </div>
     </div>
   </div>
-  <div class="body">
-    <div class="chart">
-    </div>
-  </div>
-</div>
+<% end %>
 
 <!-- 6 + 6 -->
 <div class="fluid">
@@ -60,61 +87,54 @@
   <div class="widget grid6">
     <div class="whead">
       <h6>Usages(not yet)</h6>
-      <div class="on_off">
-        <span class="icon-reload-CW"></span>
-        <input type="checkbox" id="check1" checked="checked" name="chbox" />
-      </div>            
     </div>
 
     <ul class="messagesOne">
-      <li class="by_user">
-      <a href="#" title=""><img src="/assets/Aquincum/live/face1.png" alt="" /></a>
-      <div class="messageArea">
-        <span class="aro"></span>
-        <div class="infoRow">
-          <span class="name"><strong>John</strong> says:</span>
-          <span class="time">3 hours ago</span>
-        </div>
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam vel est enim, vel eleifend felis. Ut volutpat, leo eget euismod scelerisque, eros purus lacinia velit, nec rhoncus mi dui eleifend orci. 
-        Phasellus ut sem urna, id congue libero. Nulla eget arcu vel massa suscipit ultricies ac id velit
-      </div>
-      </li>
-
-      <li class="divider"><span></span></li>
-
-      <li class="by_me">
-      <a href="#" title=""><img src="/assets/Aquincum/live/face2.png" alt="" /></a>
-      <div class="messageArea">
-        <span class="aro"></span>
-        <div class="infoRow">
-          <span class="name"><strong>Eugene</strong> says:</span>
-          <span class="time">3 hours ago</span>
-        </div>
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam vel est enim, vel eleifend felis. Ut volutpat, leo eget euismod scelerisque, eros purus lacinia velit, nec rhoncus mi dui eleifend orci. 
-        Phasellus ut sem urna, id congue libero. Nulla eget arcu vel massa suscipit ultricies ac id velit
-      </div>
-      </li>
-
-      <li class="by_me">
-      <a href="#" title=""><img src="/assets/Aquincum/live/face2.png" alt="" /></a>
-      <div class="messageArea">
-        <span class="aro"></span>
-        <div class="infoRow">
-          <span class="name"><strong>Eugene</strong> says:</span>
-          <span class="time">3 hours ago</span>
-        </div>
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam vel est enim, vel eleifend felis. Ut volutpat, leo eget euismod scelerisque, eros purus lacinia velit, nec rhoncus mi dui eleifend orci. 
-        Phasellus ut sem urna, id congue libero. Nulla eget arcu vel massa suscipit ultricies ac id velit
-      </div>
-      </li>
     </ul>
   </div>
 
   <!-- Calendar -->
   <div class="widget grid6">
     <div class="whead">
-      <h6>Calendar(not yet)</h6>
+      <h6>Tutorial</h6>
     </div>
-    <div id="calendar"></div>
+    <ul class="messagesOne">
+      <li class="by_user">
+      <a href="#" title=""><img src="/assets/Aquincum/live/face1.png" alt="" /></a>
+      <div class="messageArea">
+        <span class="aro"></span>
+        <div class="infoRow">
+          <span class="name"><strong>Anonymous User</strong> says:</span>
+          <span class="time">Now</span>
+        </div>
+        How can I connect to my instance?
+      </div>
+      </li>
+      <li class="divider"><span></span></li>
+      <li class="by_me">
+      <a href="#" title=""><img src="/assets/Aquincum/live/face2.png" alt="" /></a>
+      <div class="messageArea">
+        <span class="aro"></span>
+        <div class="infoRow">
+          <span class="name"><strong>Administrator</strong> says:</span>
+          <span class="time">Always</span>
+        </div>
+        "HOW TO CONNECT TO YOUR INSTANCE"<br />
+        <strong><%= link_to "CLINK(pdf)", "/tutorial.pdf", :target => "_blank", :"pjax-diable" => "" %></strong>
+      </div>
+      </li>
+      <li class="divider"><span></span></li>
+      <li class="by_user">
+      <a href="#" title=""><img src="/assets/Aquincum/live/face1.png" alt="" /></a>
+      <div class="messageArea">
+        <span class="aro"></span>
+        <div class="infoRow">
+          <span class="name"><strong>Anonymous User</strong> says:</span>
+          <span class="time">Now</span>
+        </div>
+        Thank you !!
+      </div>
+      </li>
+    </ul>
   </div>
 </div>

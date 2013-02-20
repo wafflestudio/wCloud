@@ -18,6 +18,7 @@ WCloud::Application.routes.draw do
     post "/snapshot" => "instances#snapshot", :on => :member
     post "/restore" => "instances#restore", :on => :member
     post "/duplicate" => "instances#duplicate", :on => :member
+    post "/performance" => "instances#performance", :on => :member
     post "/update_state" => "instances#update_state", :on => :collection
   end
 

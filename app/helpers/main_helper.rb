@@ -4,9 +4,10 @@ module MainHelper
     json && json.length >=2 ? JSON.parse(json) : []
   end
 
-  def get_perf
-    json = `#{xen_perf}`
-    json && json.length >=2 ? JSON.parse(json) : []
+  def get_perf(instance, lines = 0)
+    return [] unless instance.is_a?(Instance)
+
+    `tail -n #{lines} #{instance_dir(instance)}/#{instance._id}.log`.split(/\n/)
   end
 
   def create_vm(instance)
@@ -60,7 +61,7 @@ module MainHelper
     `#{xl} domname #{domid}"`
   end
 
-  def create_disk(disk, parent_path)
+  def create_disk(disk, parent_path = "")
     return false unless disk.is_a?(Disk)
 
     if parent_path.nil? || parent_path.empty?

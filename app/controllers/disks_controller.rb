@@ -1,5 +1,5 @@
 class DisksController < ApplicationController
-  layout :false, :only => [:new, :edit, :show, :summary]
+  layout :false, :only => [:new, :edit, :summary]
 
   before_filter :is_user?
   before_filter :can_access?, :except => [:index, :new, :create]

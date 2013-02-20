@@ -26,11 +26,11 @@
           <tr>
             <td><input type="radio" name="checkRow" id="template-<%= template._id %>" class="template-radio-btn" value="<%= template._id %>" /></td>
             <td>
-              <a href="<%= template_path(template) %>" title="<%= template.name %>" class="lightbox">
+              <a href="<%= template_path(template) %>" title="<%= template.name %>">
                 <%= image_tag template.logo.url(:thumb), :style => "vertical-align: middle;" %>
               </a>
             </td>
-            <td><%= link_to template.name, template_path(template), :title => template.description, :class => "lightbox" %></td>
+            <td><%= link_to template.name, template_path(template), :title => template.description %></td>
             <td><%= template.description %></td>
             <td class="fileInfo"><span><strong>Active:</strong> <%= template.active %></span><span><strong>Arch:</strong> <%= template.arch %>bit</span></td>
             <td><%= template.created_at %></td>

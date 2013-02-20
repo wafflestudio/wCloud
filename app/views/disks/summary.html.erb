@@ -41,7 +41,7 @@
       <tbody>
         <tr>
           <td>
-            <a href="<%= instance_path(@disk.instance) %>" title="<%= @disk.instance.description %>" class="lightbox">
+            <a href="<%= instance_path(@disk.instance) %>" title="<%= @disk.instance.description %>">
               <%= image_tag @disk.instance.template.logo.url(:thumb), :style => "vertical-align: middle;" %>
               <%= "#{@disk.instance.name}:/dev/#{@disk.vdev}" %>
             </a>

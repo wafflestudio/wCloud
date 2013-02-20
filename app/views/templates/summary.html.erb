@@ -16,7 +16,7 @@
       <tbody>
         <tr>
           <td>
-            <a href="<%= template_path(@template.instance.template) %>" title="<%= @template.instance.template.description %>" class="lightbox">
+            <a href="<%= template_path(@template.instance.template) %>" title="<%= @template.instance.template.description %>">
               <%= image_tag @template.instance.template.logo.url(:thumb), :style => "vertical-align: middle;" %>
               <%= "#{@template.instance.template.name}(#{@template.instance.template.arch})" %>
             </a>

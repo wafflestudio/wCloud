@@ -38,7 +38,7 @@
       <tbody>
         <tr>
           <td>
-            <a href="<%= instance_path(@network.instance) %>" title="<%= @network.instance.description %>" class="lightbox">
+            <a href="<%= instance_path(@network.instance) %>" title="<%= @network.instance.description %>">
               <%= image_tag @network.instance.template.logo.url(:thumb), :style => "vertical-align: middle;" %>
               <%= @network.instance.name %>
             </a>

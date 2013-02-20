@@ -1,3 +1,5 @@
 <% if !flash[:return][:status] %>
   alert('<%= flash[:return][:msg] %>');
+<% else %>
+  alert('Create Disk, check Disks tab');
 <% end %>

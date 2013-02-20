@@ -1,14 +1,76 @@
 <% render "default" %>
 
+<% unless @instance.nil? %>
+<script type="text/javascript">
+  var chartType = 0; // 0: network IO, 1: CPU, RAM, 2: DISK IO
+  var inputdata = [[], []]; 
+  var result = [0, 0];
+  var before = [0, 0];
+  var label = [["Network Input", "Network Output"], ["CPU", "RAM"], ["Disk Read", "Disk Write"]];
+  var options = {
+    xaxes: [{}], 
+    yaxes: [{}, {
+      show: 
+      true, position: "right"
+    }] 
+  }
+  $(document).ready(function() {
+    var plot = $.plot($(".chart"), [{data: inputdata[0], label: label[chartType][0]}, {data: inputdata[1], label: label[chartType][1], yaxis: 2}], options); 
+
+    function getData(type) { 
+      chartType = type;
+      // This could be an ajax call back. 
+      $.post('/instances/<%= @instance._id %>/performance', function(json) {
+        inputdata = [[], []];
+        for(i = 0; i < json.length; i++) {
+        if(chartType == 0) {
+          result[0] = (json[i].input - before[0]) / 10
+          result[1] = (json[i].output - before[1]) / 10
+          before[0] = json[i].input;
+          before[1] = json[i].output;
+        } else if(chartType == 1) {
+          result[0] = json[i].cpu;
+          result[1] = 0;
+        } else { // else if(chartType == 2) {
+          result[0] = (json[i].read - before[0]) / 2048
+          result[1] = (json[i].write - before[1]) / 2048
+          before[0] = json[i].read;
+          before[1] = json[i].write;
+        }
+
+        inputdata[0].push([i, result[0]])
+        inputdata[1].push([i, result[1]])
+        }
+        inputdata[0] = inputdata[0].slice(1);
+        inputdata[1] = inputdata[1].slice(1);
+        plot.setData([{ data: inputdata[0], label: label[chartType][0] }, 
+            { data: inputdata[1], label: label[chartType][1], yaxis: 2}
+            ] 
+        );
+        plot.setupGrid();
+        plot.draw();
+      });
+    }
+
+    getData(chartType);
+    setInterval(getData(chartType), 10000);
+
+    $('.chartType').click(function() {
+        getData($(this).attr('type')); 
+        return false;
+    });
+  });
+</script>
+
 <!-- Chart -->
 <div class="widget chartWrapper">
-  <div class="whead"><h6>Statistics(not yet)</h6>
+  <div class="whead"><h6>Statistics</h6>
     <div class="titleOpt">
       <a href="#" data-toggle="dropdown"><span class="icos-cog3"></span></a>
       <ul class="dropdown-menu pull-right">
-        <li><a href="#"><span class="icon-broadcast-2"></span>Network</a></li>
-        <li><a href="#"><span class="icon-database"></span>Disk</a></li>
-        <li><a href="#"><span class="icon-calculate"></span>CPU</a></li>
+        <li><a href="#network" class="chartType" type="0"><span class="icon-broadcast-2"></span>Network</a></li>
+        <li><a href="#cpu" class="chartType" type="1"><span class="icon-calculate"></span>CPU/RAM</a></li>
+        <li><a href="#disk" class="chartType" type="2"><span class="icon-database"></span>Disk IO</a></li>
       </ul>
     </div>
   </div>
@@ -17,6 +79,7 @@
     </div>
   </div>
 </div>
+<% end %>
 
 <div class="fluid">
   <!-- Media table -->
@@ -38,7 +101,7 @@
       <tbody>
         <% @instance.disks.each do |disk| %>
           <tr>
-            <td><%= link_to disk.name, disk_path(disk), :title => disk.description, :class => "lightbox" %></td>
+            <td><%= link_to disk.name, disk_path(disk), :title => disk.description %></td>
             <td>/dev/<%= disk.vdev %></td>
             <td><%= disk.mode_to_string %></td>
             <td class="fileInfo"><span><strong>Spec:</strong> <%= disk.disk_spec.name %></span><span><strong>Size:</strong> <%= disk.size / 1024 %>GB</span></td>
@@ -74,7 +137,7 @@
       <tbody>
         <% @instance.networks.each do |network| %>
           <tr>
-            <td><%= link_to network.name, network_path(network), :title => network.description, :class => "lightbox" %></td>
+            <td><%= link_to network.name, network_path(network), :title => network.description %></td>
             <td><%= network.ip %></td>
             <td><%= network.mac %></td>
             <td class="fileInfo"><span><strong>Spec:</strong> <%= network.network_spec.name %></span><span><strong>Type:</strong> <%= network.network_spec.type_to_string %></span></td>
@@ -109,7 +172,7 @@
       <tbody>
         <% @instance.templates.each do |template| %>
           <tr>
-            <td><%= link_to template.name, template_path(template), :title => template.description, :class => "lightbox" %></td>
+            <td><%= link_to template.name, template_path(template), :title => template.description %></td>
             <td><%= template.description %></td>
             <td class="fileInfo"><span><strong>Active:</strong> <%= template.active %></span><span><strong>Arch:</strong> <%= template.arch %>bit</span></td>
             <td><%= template.created_at %></td>
