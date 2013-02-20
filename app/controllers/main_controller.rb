@@ -3,6 +3,6 @@ class MainController < ApplicationController
 
   def home
     @instance = current_user.instances.where(:state => Instance::RUNNING).first
-    @instance = Admin.instances.first if @instance.nil?
+    @instance = Admin.first.instances.first if @instance.nil?
   end
 end

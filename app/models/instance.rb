@@ -35,8 +35,8 @@ class Instance
   has_many :logs, :class_name => "Log", :as => "logable", :dependent => :destroy
 
   ## Security
-  attr_accessible :state, :domid, :disks, :snapshots, :networks, :templates, :logs
-  attr_readonly :user, :template
+  #attr_accessible :state, :domid, :disks, :snapshots, :networks, :templates, :logs
+  #attr_readonly :user, :template
 
   ## Validation
   validates :user, :presence => true

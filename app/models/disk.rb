@@ -29,8 +29,8 @@ class Disk
   has_many :logs, :class_name => "Log", :as => "logable", :dependent => :destroy
 
   ## Security
-  attr_accessible :path, :instance, :snapshot, :parent, :children, :logs
-  attr_readonly :user, :disk_spec
+  #attr_accessible :path, :instance, :snapshot, :parent, :children, :logs
+  #attr_readonly :user, :disk_spec
 
   ## Validation
   validates :user, :presence => true

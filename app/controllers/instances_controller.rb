@@ -22,6 +22,9 @@ class InstancesController < ApplicationController
 
     @template = @instance.template
 
+    logger.info @instance
+    logger.info @template
+
     @disk = @instance.disks.new
     @disk.user = current_user
     @disk.disk_spec = DiskSpec.first
