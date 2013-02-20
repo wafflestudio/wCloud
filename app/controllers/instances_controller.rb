@@ -20,18 +20,12 @@ class InstancesController < ApplicationController
     @instance = current_user.instances.new(params[:instance])
     prepare_vm(@instance)
 
-    @template = @instance.template
-
-    logger.info @instance
-    logger.info @template
-
     @disk = @instance.disks.new
     @disk.user = current_user
     @disk.disk_spec = DiskSpec.first
     @disk.path = instance_dir(@instance)+"/"+@disk._id+".vhd"
     @disk.vdev = @instance.template.type == Template::PVM ? "xvda" : "hda"
-    @disk.attached = true
-    create_disk(@disk, @template.path) if @disk.save
+    create_disk(@disk, @instance.template.path) if @disk.save
 
     @network = @instance.networks.new
     @network.user = current_user
@@ -41,7 +35,7 @@ class InstancesController < ApplicationController
     @network.save
 
     if @instance.save 
-      if generate_config(@instance) && create_vm(@instance) 
+      if generate_config(@instance)# && create_vm(@instance) 
         flash[:return] = {:status => true, :msg => ""}
       else
         flash[:return] = {:status => false, :msg => "Failed to create instance"}

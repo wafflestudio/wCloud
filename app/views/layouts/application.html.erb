@@ -37,7 +37,7 @@
             <li><%= link_to "", about_path, :class => "search", :title => "About" %></li>
             <% if user_signed_in? %>
               <li><a href="#" title="Settings" class="settings"></a></li>
-              <li><%= link_to "", destroy_user_session_path, :method => :delete, :class => "logout", :title => "Signout", :"pjax-disable" => "" %></li>
+              <li><%= link_to "", destroy_user_session_path, :class => "logout", :title => "Signout", :"pjax-disable" => "" %></li>
             <% end %>
           </ul>
           <a title="" class="iButton"></a>
