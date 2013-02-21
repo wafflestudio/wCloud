@@ -99,12 +99,30 @@ module MainHelper
       #TODO
     end
   end
+  
+  def pause_disk(pid, minor)
+    system("#{tap_ctl} pause -p #{pid} -m #{minor}")
+  end
+
+  def unpause_disk(pid, minor)
+    system("#{tap_ctl} unpause -p #{pid} -m #{minor}")
+  end
+
+  def get_tapinfo(path)
+    line = `#{tap_ctl} list | grep #{path}`
+    field = line.split(" ")
+    json = field.empty? ? {} : {:pid => field[0].split("=").last, :minor => field[1].split("=").last, :state => field[2].split("=").last, :args => field[3].split("=").last}
+  end
 
   def create_snapshot(snapshot)
     return false unless snapshot.is_a?(Snapshot)
 
     snapshot.disks.each do |disk|
+      info = get_tapinfo(disk.path)
+      pause_disk(info[:pid], info[:minor])
+      rename_disk(disk.path, disk.parent.path)
       system("#{vhd_util} snapshot -n #{disk.path} -p #{disk.parent.path}")
+      unpause_disk(info[:pid], info[:minor])
     end
   end
 

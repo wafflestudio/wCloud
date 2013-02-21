@@ -23,7 +23,7 @@ class InstancesController < ApplicationController
     @disk = @instance.disks.new
     @disk.user = current_user
     @disk.disk_spec = DiskSpec.first
-    @disk.path = instance_dir(@instance)+"/"+@disk._id+".vhd"
+    @disk.path = instance_dir(@instance)+"/"+@disk.generate_uuid+".vhd"
     @disk.vdev = @instance.template.type == Template::PVM ? "xvda" : "hda"
     create_disk(@disk, @instance.template.path) if @disk.save
 
@@ -192,9 +192,25 @@ class InstancesController < ApplicationController
   end
   def snapshot
     #@instance = Instance.find(params[:id])
-    if @instance.state == Instance::RUNNING && @instance.state == Instance::STOPPED
-      #TODO
+    if @instance.state == Instance::RUNNING || @instance.state == Instance::STOPPED
+      @snapshot = @instance.snapshots.new
+      @snapshot.disks = @instance.create_snapshots
+      @snapshot.disks.each do |disk|
+        disk.path = instance_dir(disk.instance)+"/"+disk.generate_uuid+".vhd"
+        disk.vdev = "null"
+        disk.save
+      end
+      pause_vm(@instance)
+      if @snapshot.save && create_snapshot(@snapshot)
+        json = {:action => "snapshot", :status => true, :msg => ""}
+      else
+        json = {:action => "snapshot", :status => false, :msg => "Failed to snapshot#1"}
+      end
+      unpause_vm(@instance)
+    else
+      json = {:action => "snapshot", :status => false, :msg => "Failed to snapshot#2"}
     end
+    render :json => json
   end
   def restore
     #@instance = Instance.find(params[:id])

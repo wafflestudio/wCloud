@@ -23,7 +23,6 @@ class Instance
   field :vncport, type: Integer, :default => 0
   field :vncpassword, type: String, :default => Digest::SHA1.hexdigest(Time.now.to_s)[0...6]
 
-
   ## Relation
   belongs_to :user
   belongs_to :instance_spec
@@ -72,6 +71,20 @@ class Instance
     self.disks.each do |disk|
       return disk if disk.vdev.last == "a"
     end
+  end
+
+  def create_snapshots
+    self.disks.where("this.vdev != 'null'").map {|parent|
+      disk = parent.children.new 
+      disk.user = parent.user
+      disk.disk_spec = parent.disk_spec
+      disk.instance = parent.instance
+      disk.protected = parent.protected
+      disk.vdev = parent.vdev
+      disk.mode = parent.mode
+      disk.path = parent.path
+      disk if disk.save
+    }
   end
 
   def can_destroy?

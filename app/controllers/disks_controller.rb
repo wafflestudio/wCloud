@@ -15,7 +15,7 @@ class DisksController < ApplicationController
 
   def create
     @disk = current_user.disks.new(params[:disk])
-    @disk.path = disk_root+"/"+@disk._id+".vhd"
+    @disk.path = disk_root+"/"+@disk.generate_uuid+".vhd"
 
     if @disk.save
       if create_disk(@disk, "")

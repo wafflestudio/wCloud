@@ -15,7 +15,7 @@ class Disk
   field :size, type: Integer, :default => 50 * GB
 
   field :protected, type: Boolean, :default => true
-  field :vdev, type: String, :default => ""
+  field :vdev, type: String, :default => "null"
   field :mode, type: Integer, :default => WRITE
 
   ## Relation
@@ -49,6 +49,10 @@ class Disk
     else
       false
     end
+  end
+
+  def generate_uuid
+      Digest::SHA1.hexdigest(self._id.to_s + Time.now.to_s)[0...24]
   end
   
   private
