@@ -21,7 +21,8 @@ class Instance
   field :domid, type: Integer, :default => 0
 
   field :vncport, type: Integer, :default => 0
-  field :vncpassword, type: String, :default => ""
+  field :vncpassword, type: String, :default => Digest::SHA1.hexdigest(Time.now.to_s)[0...6]
+
 
   ## Relation
   belongs_to :user
@@ -65,6 +66,12 @@ class Instance
   def state_to_string
     states = ["Unknown", "Creating", "Running", "Destroying", "Destroyed", "Stopping", "Stopped", "Starting", "Rebooting"]
     states[self.state]
+  end
+
+  def main_disk
+    self.disks.each do |disk|
+      return disk if disk.vdev.last == "a"
+    end
   end
 
   def can_destroy?

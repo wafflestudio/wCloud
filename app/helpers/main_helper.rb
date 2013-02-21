@@ -71,6 +71,18 @@ module MainHelper
     end
   end
 
+  def rename_disk(disk, new_path)
+    return false unless disk.is_a?(Disk)
+
+    system("mv -f #{disk.path} #{new_path}")
+  end
+
+  def copy_disk(disk, target_path)
+    return false unless disk.is_a?(Disk)
+
+    system("cp -f #{disk.path} #{target_path}&")
+  end
+
   def destroy_disk(disk)
     return false unless disk.is_a?(Disk)
 
@@ -96,11 +108,19 @@ module MainHelper
     end
   end
 
+  def xenstore_read(domid, path) # path start_with "/"
+    `#{Xen::XENSTOREREAD} /local/domain/#{domid}#{path}`.to_s.gsub(/\n/,'')
+  end
+
+  def xenstore_ls(domid, path) # path start_with "/"
+    `#{Xen::XENSTORELS} /local/domain/#{domid}#{path}`.to_s.gsub(/\n/,'')
+  end
+
   private
   def prepare_vm(instance)
     return false unless instance.is_a?(Instance)
 
-    system("mkdir #{instance_dir(instance)}")
+    system("mkdir -p #{instance_dir(instance)}")
   end
 
   def clean_vm(instance)

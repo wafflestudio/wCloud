@@ -14,7 +14,13 @@ class TemplatesController < ApplicationController
 
   def create
     @template = Template.new(params[:template])
-    @template.save 
+    @template.path = template_root+"/"+@template._id+".vhd"
+    disk = @template.instance.main_disk
+    if @template.save && copy_disk(disk, @template.path) 
+      flash[:return] = {:status => true, :msg => ""}
+    else
+      flash[:return] = {:status => false, :msg => @template.errors.full_messages.to_s}
+    end
   end
 
   def show
@@ -34,7 +40,7 @@ class TemplatesController < ApplicationController
     if @template.update_attributes(params[:template]) 
       flash[:return] = {:status => true, :msg => ""}
     else
-      flash[:return] = {:status => false, :msg => @instance.errors.full_messages.to_s}
+      flash[:return] = {:status => false, :msg => @template.errors.full_messages.to_s}
     end
   end
 

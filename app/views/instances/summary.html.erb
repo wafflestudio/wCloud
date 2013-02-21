@@ -112,6 +112,10 @@
 <%= text_field_tag :name, @instance.name, {:class => "clear"} %>
 <%= label_tag :description %>
 <%= text_area_tag :description, @instance.description, {:rows => 8, :cols => "", :class => "auto"} %>
+<%= label_tag :vncport, "VNC Port" %>
+<%= text_field_tag :vncport, @instance.vncport, {:class => "clear"} %>
+<%= label_tag :vncpassword, "VNC Password" %>
+<%= text_field_tag :vncpassword, @instance.vncpassword, {:class => "clear"} %>
 <div>
   <span class="floatR">
     <%= check_box_tag :protected, "", {:class => "check", :selected => @instance.protected} %>

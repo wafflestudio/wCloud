@@ -89,7 +89,10 @@ class InstancesController < ApplicationController
         network = instance.networks.first
         ip = network.nil? ? "" : get_ip_from_mac(network.network_spec.bridge, network.mac)
         if !ip.empty? && network.update_attribute(:ip, ip)
-          instance.update_attribute(:state, Instance::RUNNING)
+          info = get_info(instance._id).first
+          domid = info.empty? ? 0 : info.first['domid']
+          vncport = xenstore_read(domid, "/console/vnc-port")
+          instance.update_attribute({:state => Instance::RUNNING, :vncport => vncport, :domid => domid})
         end
       when Instance::STOPPING
         info = get_info(instance._id)
@@ -101,12 +104,17 @@ class InstancesController < ApplicationController
         network = instance.networks.first
         ip = network.nil? ? "" : get_ip_from_mac(network.network_spec.bridge, network.mac)
         if !ip.empty? && network.update_attribute(:ip, ip)
-          instance.update_attribute(:state, Instance::RUNNING)
+          info = get_info(instance._id).first
+          domid = info.empty? ? 0 : info.first['domid']
+          vncport = xenstore_read(domid, "/console/vnc-port")
+          instance.update_attribute({:state => Instance::RUNNING, :vncport => vncport, :domid => domid})
         end
       when Instance::REBOOTING
         info = get_info(instance._id)
         if !info.empty? && info.first['domid'] != instance.domid
-          instance.update_attributes({:state => Instance::RUNNING, :domid => info.first['domid']})
+          domid = info.first['domid']
+          vncport = xenstore_read(domid, "/console/vnc-port")
+          instance.update_attributes({:state => Instance::RUNNING, :vncport => vncport, :domid => domid})
         end
       end
       json << {:id => instance._id, :name => instance.name, :state => instance.state_to_string}
