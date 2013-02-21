@@ -138,11 +138,12 @@ module MainHelper
 
         if instance.template.type == Template::PVM
           f.puts "bootloader='pygrub'"
+          f.puts "vfb=['type=vnc,vnclisten=0.0.0.0,vncpasswd=#{instance.vncpassword},vncconsole=1']"
         elsif instance.template.type == Template::HVM
           f.puts "builder='hvm'"
           f.puts "vnc='1'"
           f.puts "vnclisten='0.0.0.0'"
-          f.puts "vncpassword='#{instance.vncpassword}'"
+          f.puts "vncpasswd='#{instance.vncpassword}'"
           f.puts "usb='1'"
           f.puts "usbdevice='tablet'"
         end

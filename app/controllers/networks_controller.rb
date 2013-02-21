@@ -22,7 +22,11 @@ class NetworksController < ApplicationController
 
   def update
     #@network = Network.find(params[:id])
-    @network.update_attributes(params[:network]) 
+    if @network.update_attributes(params[:network]) 
+        flash[:return] = {:status => true, :msg => ""}
+      else
+        flash[:return] = {:status => false, :msg => @instance.errors.full_messages.to_s}
+    end
   end
 
   private

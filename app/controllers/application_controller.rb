@@ -5,4 +5,8 @@ class ApplicationController < ActionController::Base
   def is_user?
     redirect_to new_user_session_path unless user_signed_in?
   end
+
+  def back
+    request.env['HTTP_REFERER'] || '/'
+  end
 end

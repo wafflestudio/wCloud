@@ -31,7 +31,11 @@ class TemplatesController < ApplicationController
 
   def update
     #@template = Template.find(params[:id])
-    @template.update_attributes(params[:template]) 
+    if @template.update_attributes(params[:template]) 
+      flash[:return] = {:status => true, :msg => ""}
+    else
+      flash[:return] = {:status => false, :msg => @instance.errors.full_messages.to_s}
+    end
   end
 
   def destroy

@@ -35,7 +35,7 @@ class InstancesController < ApplicationController
     @network.save
 
     if @instance.save 
-      if generate_config(@instance)# && create_vm(@instance) 
+      if generate_config(@instance) && create_vm(@instance) 
         flash[:return] = {:status => true, :msg => ""}
       else
         flash[:return] = {:status => false, :msg => "Failed to create instance"}
@@ -62,7 +62,11 @@ class InstancesController < ApplicationController
 
   def update
     #@instance = Instance.find(params[:id])
-    @instance.update_attributes(params[:instance]) 
+    if @instance.update_attributes(params[:instance]) 
+        flash[:return] = {:status => true, :msg => ""}
+      else
+        flash[:return] = {:status => false, :msg => @instance.errors.full_messages.to_s}
+    end
   end
 
   def destroy

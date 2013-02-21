@@ -43,7 +43,11 @@ class DisksController < ApplicationController
 
   def update
     #@disk = Disk.find(params[:id])
-    @disk.update_attributes(params[:disk]) 
+    if @disk.update_attributes(params[:disk]) 
+        flash[:return] = {:status => true, :msg => ""}
+      else
+        flash[:return] = {:status => false, :msg => @instance.errors.full_messages.to_s}
+    end
   end
 
   def destroy

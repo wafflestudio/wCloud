@@ -17,11 +17,10 @@
     $(document).ready(function() {
       var plot = $.plot($(".chart"), [{data: inputdata[0], label: label[chartType][0]}, {data: inputdata[1], label: label[chartType][1], yaxis: 2}], options); 
 
-      function getData(type) { 
-        chartType = type;
+      function getData() { 
+        console.log('Call');
         // This could be an ajax call back. 
         $.post('/instances/<%= @instance._id %>/performance', function(json) {
-          console.log(json);
           inputdata = [[], []];
           for(i = 0; i < json.length; i++) {
           if(chartType == 0) {
@@ -53,11 +52,12 @@
         });
       }
 
-      getData(chartType);
-      setInterval(getData(chartType), 10000);
+      getData()
+      setInterval(getData, 10000);
 
       $('.chartType').click(function() {
-          getData($(this).attr('type')); 
+          chartType = $(this).attr('type'); 
+          getData();
           return false;
       });
     });
@@ -67,11 +67,11 @@
   <div class="widget chartWrapper">
     <div class="whead"><h6>Statistics[ <%= @instance.name %> ]</h6>
       <div class="titleOpt">
-        <a href="#" data-toggle="dropdown"><span class="icos-cog3"></span></a>
+        <a href="#" data-toggle="dropdown" pjax-disable><span class="icos-cog3"></span></a>
         <ul class="dropdown-menu pull-right">
-          <li><a href="#network" class="chartType" type="0"><span class="icon-broadcast-2"></span>Network</a></li>
-          <li><a href="#cpu" class="chartType" type="1"><span class="icon-calculate"></span>CPU/RAM</a></li>
-          <li><a href="#disk" class="chartType" type="2"><span class="icon-database"></span>Disk IO</a></li>
+          <li><a href="#network" class="chartType" type="0" pjax-disable><span class="icon-broadcast-2"></span>Network</a></li>
+          <li><a href="#cpu" class="chartType" type="1" pjax-disable><span class="icon-calculate"></span>CPU/RAM</a></li>
+          <li><a href="#disk" class="chartType" type="2" pjax-disable><span class="icon-database"></span>Disk IO</a></li>
         </ul>
       </div>
     </div>
